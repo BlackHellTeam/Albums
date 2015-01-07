@@ -3,18 +3,27 @@ package com.liang.albums.fragment;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.os.Parcelable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.liang.albums.R;
 import com.liang.albums.app.AlbumsApp;
-import com.liang.albums.util.PreferenceConstants;
+import com.liang.albums.util.Constants;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import org.brickred.socialauth.Feed;
 import org.brickred.socialauth.android.SocialAuthAdapter;
@@ -29,12 +38,11 @@ import java.util.List;
 public class AlbumsShowFragment extends PlaceholderFragment {
 
     private SocialAuthAdapter authAdapter;
-    private ImageView imgShow;
+    private ViewPager mPager;
     private List<Feed> feedList;
-    private ImageShowHandle handler;
 
     private ProgressDialog mDialog;
-    private Bitmap bitImage;
+    DisplayImageOptions options;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +50,18 @@ public class AlbumsShowFragment extends PlaceholderFragment {
 
         authAdapter = AlbumsApp.getInstance().getAuthAdapter();
 
-        handler = new ImageShowHandle();
+        options = new DisplayImageOptions.Builder()
+                .showImageForEmptyUri(R.drawable.ic_empty)
+                .showImageOnFail(R.drawable.ic_error)
+                .resetViewBeforeLoading(true)
+                .cacheOnDisk(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .considerExifParams(true)
+                .displayer(new FadeInBitmapDisplayer(300))
+                .build();
+
+        //handler = new ImageShowHandle();
 
     }
 
@@ -50,7 +69,7 @@ public class AlbumsShowFragment extends PlaceholderFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_albums, container, false);
 
-        imgShow = (ImageView)rootView.findViewById(R.id.img_albums_show);
+        mPager = (ViewPager)rootView.findViewById(R.id.pager_albums_show);
 
         mDialog = new ProgressDialog(getActivity());
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -65,7 +84,7 @@ public class AlbumsShowFragment extends PlaceholderFragment {
     public void onResume() {
         super.onResume();
         if (AlbumsApp.getInstance().getPreferenceUtil()
-                .getPrefBoolean(PreferenceConstants.LOGIN_INSTAGRAM, false)){
+                .getPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false)){
             authAdapter.getFeedsAsync(new FeedDataListener());
             mDialog.show();
         }
@@ -83,7 +102,8 @@ public class AlbumsShowFragment extends PlaceholderFragment {
             feedList = t;
 
             if (feedList != null && feedList.size() > 0) {
-                handler.sendEmptyMessage(1);
+                mPager.setAdapter(new ImageAdapter());
+                mPager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION, 0));
                 Log.d("AlbumsShow", "Feed List size = "+feedList.size());
                 for(int i=0;i<feedList.size();++i){
                     Log.d("AlbumsShow", "Feed List [" + i + "] = " +feedList.get(i).getMessage());
@@ -98,20 +118,86 @@ public class AlbumsShowFragment extends PlaceholderFragment {
         }
     }
 
-    private class ImageShowHandle extends Handler{
+    private class ImageAdapter extends PagerAdapter {
+
+        private LayoutInflater inflater;
+
+        ImageAdapter() {
+            inflater = LayoutInflater.from(getActivity());
+        }
+
         @Override
-        public void handleMessage(Message msg) {
-            final String url = feedList.get(0).getMessage();
-            Thread thread = new Thread(){
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((View) object);
+        }
+
+        @Override
+        public int getCount() {
+            return feedList.size();
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup view, int position) {
+            View imageLayout = inflater.inflate(R.layout.item_pager_image, view, false);
+            assert imageLayout != null;
+            ImageView imageView = (ImageView) imageLayout.findViewById(R.id.img_pager_item);
+            final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.loading_pager_item);
+
+            ImageLoader.getInstance().displayImage(feedList.get(position).getMessage(),
+                    imageView, options,
+                    new SimpleImageLoadingListener() {
                 @Override
-                public void run() {
-                    Log.d("AlbumShow", "feedList message 0 : " + feedList.get(0).getMessage());
-//                    Picasso.with(getActivity()).load(feedList.get(0).getMessage())
-//                            .centerCrop()
-//                            .into(imgShow);
+                public void onLoadingStarted(String imageUri, View view) {
+                    spinner.setVisibility(View.VISIBLE);
                 }
-            };
-            thread.run();
+
+                @Override
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    String message = null;
+                    switch (failReason.getType()) {
+                        case IO_ERROR:
+                            message = "Input/Output error";
+                            break;
+                        case DECODING_ERROR:
+                            message = "Image can't be decoded";
+                            break;
+                        case NETWORK_DENIED:
+                            message = "Downloads are denied";
+                            break;
+                        case OUT_OF_MEMORY:
+                            message = "Out Of Memory error";
+                            break;
+                        case UNKNOWN:
+                            message = "Unknown error";
+                            break;
+                    }
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+
+                    spinner.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    spinner.setVisibility(View.GONE);
+                }
+            });
+
+            view.addView(imageLayout, 0);
+            return imageLayout;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view.equals(object);
+        }
+
+        @Override
+        public void restoreState(Parcelable state, ClassLoader loader) {
+        }
+
+        @Override
+        public Parcelable saveState() {
+            return null;
         }
     }
 

@@ -30,8 +30,6 @@ public class PlaceholderFragment extends Fragment {
     protected static final int SECTION_NUMBER_INSTAGRAM = 2;
     protected static final int SECTION_NUMBER_FLICKR = 3;
 
-    protected Context mContext;
-
     /**
      * Returns a new instance of this fragment for the given section
      * number.
@@ -56,7 +54,6 @@ public class PlaceholderFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
-        fragment.setContext(ctx);
 
         return fragment;
     }
@@ -78,7 +75,4 @@ public class PlaceholderFragment extends Fragment {
                 getArguments().getInt(ARG_SECTION_NUMBER));
     }
 
-    public void setContext(Context ctx){
-        this.mContext = ctx;
-    }
 }

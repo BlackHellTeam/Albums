@@ -1,8 +1,6 @@
 package com.liang.albums.fragment;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +10,7 @@ import android.widget.Button;
 import com.liang.albums.R;
 import com.liang.albums.activity.MainActivity;
 import com.liang.albums.app.AlbumsApp;
-import com.liang.albums.util.PreferenceConstants;
+import com.liang.albums.util.Constants;
 
 import org.brickred.socialauth.android.SocialAuthAdapter;
 
@@ -40,7 +38,7 @@ public class InstagramManagementFragment extends PlaceholderFragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                authAdapter.authorize(mContext, SocialAuthAdapter.Provider.INSTAGRAM);
+                authAdapter.authorize(getActivity(), SocialAuthAdapter.Provider.INSTAGRAM);
                 btnLogin.setClickable(false);
                 btnLogout.setClickable(true);
             }
@@ -50,9 +48,9 @@ public class InstagramManagementFragment extends PlaceholderFragment {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                authAdapter.signOut(mContext, SocialAuthAdapter.Provider.INSTAGRAM.name());
+                authAdapter.signOut(getActivity(), SocialAuthAdapter.Provider.INSTAGRAM.name());
                 AlbumsApp.getInstance().getPreferenceUtil()
-                        .setPrefBoolean(PreferenceConstants.LOGIN_INSTAGRAM, false);
+                        .setPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false);
                 btnLogin.setClickable(true);
                 btnLogout.setClickable(false);
             }
@@ -65,7 +63,7 @@ public class InstagramManagementFragment extends PlaceholderFragment {
     public void onResume() {
         super.onResume();
         if (AlbumsApp.getInstance().getPreferenceUtil()
-                .getPrefBoolean(PreferenceConstants.LOGIN_INSTAGRAM, false)){
+                .getPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false)){
             btnLogin.setClickable(false);
             btnLogout.setClickable(true);
         }else{

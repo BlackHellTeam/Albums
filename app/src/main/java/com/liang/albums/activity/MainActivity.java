@@ -12,7 +12,7 @@ import com.liang.albums.R;
 import com.liang.albums.app.AlbumsApp;
 import com.liang.albums.fragment.NavigationDrawerFragment;
 import com.liang.albums.fragment.PlaceholderFragment;
-import com.liang.albums.util.PreferenceConstants;
+import com.liang.albums.util.Constants;
 
 import org.brickred.socialauth.android.SocialAuthAdapter;
 
@@ -49,10 +49,11 @@ public class MainActivity extends ActionBarActivity
         authAdapter = AlbumsApp.getInstance().initAuthAdapter(this);
 
         if (AlbumsApp.getInstance().getPreferenceUtil()
-                .getPrefBoolean(PreferenceConstants.LOGIN_INSTAGRAM, false)){
+                .getPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false)){
             // has a account
             authAdapter.authorize(this, SocialAuthAdapter.Provider.INSTAGRAM);
         }
+
     }
 
     @Override
