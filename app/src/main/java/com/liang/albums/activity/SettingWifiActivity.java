@@ -25,7 +25,7 @@ public class SettingWifiActivity extends FragmentActivity {
 
         fragmentManager.beginTransaction()
                 .add(R.id.container_setting,
-                     PlaceholderFragment.newInstance(intent.getIntExtra(Constants.Intent.ACTIVITY_INTENT, -1), this));
+                     PlaceholderFragment.newInstance(intent.getIntExtra(Constants.Intent.ACTIVITY_INTENT, -1)));
 
     }
 }
