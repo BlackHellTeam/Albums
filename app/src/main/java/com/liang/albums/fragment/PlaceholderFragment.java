@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.liang.albums.R;
 import com.liang.albums.activity.MainActivity;
+import com.liang.albums.util.Constants;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -25,11 +26,6 @@ public class PlaceholderFragment extends Fragment {
      */
     protected static final String ARG_SECTION_NUMBER = "section_number";
 
-    protected static final int SECTION_NUMBER_ALBUMS = 0;
-    protected static final int SECTION_NUMBER_FACEBOOK = 1;
-    protected static final int SECTION_NUMBER_INSTAGRAM = 2;
-    protected static final int SECTION_NUMBER_FLICKR = 3;
-
     /**
      * Returns a new instance of this fragment for the given section
      * number.
@@ -39,14 +35,17 @@ public class PlaceholderFragment extends Fragment {
         PlaceholderFragment fragment = null;// = new PlaceholderFragment();
 
         switch (sectionNumber){
-            case SECTION_NUMBER_ALBUMS:
+            case Constants.Intent.ACTIVITY_INTENT_ALBUMS:
                 fragment = new AlbumsShowFragment();
                 break;
-            case SECTION_NUMBER_INSTAGRAM:
+            case Constants.Intent.ACTIVITY_INTENT_INSTAGRAM:
                 fragment = new InstagramManagementFragment();
                 break;
-            case SECTION_NUMBER_FACEBOOK:
-            case SECTION_NUMBER_FLICKR:
+            case Constants.Intent.ACTIVITY_INTENT_WIFI:
+                fragment = new WifiSettingFragment();
+                break;
+            case Constants.Intent.ACTIVITY_INTENT_FACEBOOK:
+            case Constants.Intent.ACTIVITY_INTENT_FLICKR:
             default:
                 fragment = new PlaceholderFragment();
         }
