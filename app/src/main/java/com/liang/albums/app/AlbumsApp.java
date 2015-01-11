@@ -2,8 +2,11 @@ package com.liang.albums.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 
 import com.liang.albums.util.PreferenceUtil;
+import com.liang.albums.util.WifiUtil;
 import com.liang.albums.util.oauth.ResponseListener;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -21,6 +24,7 @@ public class AlbumsApp extends Application{
 
     private SocialAuthAdapter authAdapter;
     private PreferenceUtil preferenceUtil;
+    private WifiUtil wifiUtil;
 
     public synchronized static AlbumsApp getInstance(){
         return mApplication;
@@ -44,10 +48,15 @@ public class AlbumsApp extends Application{
         return preferenceUtil;
     }
 
+    public synchronized WifiUtil getWifiUtil(){
+        return wifiUtil;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         mApplication = this;
+        wifiUtil = new WifiUtil(this);
         SocialAuthAdapter.Provider.INSTAGRAM.setCallBackUri("http://test.com");
         initImageLoader(getApplicationContext());
     }

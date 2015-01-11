@@ -61,22 +61,37 @@ public class MainActivity extends ActionBarActivity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container_main, PlaceholderFragment.newInstance(position))
+                .replace(R.id.container_main, PlaceholderFragment.
+                        newInstance(this.castPositionToSection(position)))
                 .commit();
     }
 
-    public void onSectionAttached(int number) {
-        switch (number) {
+    private Constants.Intent.ActivityIntents castPositionToSection(int position){
+        switch (position){
             case 0:
+                return Constants.Intent.ActivityIntents.ACTIVITY_INTENT_ALBUMS;
+            case 1:
+                return Constants.Intent.ActivityIntents.ACTIVITY_INTENT_FACEBOOK;
+            case 2:
+                return Constants.Intent.ActivityIntents.ACTIVITY_INTENT_INSTAGRAM;
+            case 3:
+                return Constants.Intent.ActivityIntents.ACTIVITY_INTENT_FLICKR;
+        }
+        return Constants.Intent.ActivityIntents.ACTIVITY_INTENT_ALBUMS;
+    }
+
+    public void onSectionAttached(Constants.Intent.ActivityIntents section) {
+        switch (section) {
+            case ACTIVITY_INTENT_ALBUMS:
                 mTitle = getString(R.string.title_section0);
                 break;
-            case 1:
+            case ACTIVITY_INTENT_FACEBOOK:
                 mTitle = getString(R.string.title_section1);
                 break;
-            case 2:
+            case ACTIVITY_INTENT_INSTAGRAM:
                 mTitle = getString(R.string.title_section2);
                 break;
-            case 3:
+            case ACTIVITY_INTENT_FLICKR:
                 mTitle = getString(R.string.title_section3);
                 break;
         }

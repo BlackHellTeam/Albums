@@ -30,28 +30,28 @@ public class PlaceholderFragment extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PlaceholderFragment newInstance(int sectionNumber) {
+    public static PlaceholderFragment newInstance(Constants.Intent.ActivityIntents section) {
 
         PlaceholderFragment fragment = null;// = new PlaceholderFragment();
 
-        switch (sectionNumber){
-            case Constants.Intent.ACTIVITY_INTENT_ALBUMS:
+        switch (section){
+            case ACTIVITY_INTENT_ALBUMS:
                 fragment = new AlbumsShowFragment();
                 break;
-            case Constants.Intent.ACTIVITY_INTENT_INSTAGRAM:
+            case ACTIVITY_INTENT_INSTAGRAM:
                 fragment = new InstagramManagementFragment();
                 break;
-            case Constants.Intent.ACTIVITY_INTENT_WIFI:
+            case ACTIVITY_INTENT_WIFI:
                 fragment = new WifiSettingFragment();
                 break;
-            case Constants.Intent.ACTIVITY_INTENT_FACEBOOK:
-            case Constants.Intent.ACTIVITY_INTENT_FLICKR:
+            case ACTIVITY_INTENT_FACEBOOK:
+            case ACTIVITY_INTENT_FLICKR:
             default:
                 fragment = new PlaceholderFragment();
         }
 
         Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        args.putSerializable(ARG_SECTION_NUMBER, section);
         fragment.setArguments(args);
 
         return fragment;
@@ -71,7 +71,8 @@ public class PlaceholderFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         ((MainActivity) activity).onSectionAttached(
-                getArguments().getInt(ARG_SECTION_NUMBER));
+                (Constants.Intent.ActivityIntents)
+                        getArguments().getSerializable(ARG_SECTION_NUMBER));
     }
 
 }

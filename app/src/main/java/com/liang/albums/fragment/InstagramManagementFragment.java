@@ -76,7 +76,7 @@ public class InstagramManagementFragment extends PlaceholderFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         ((MainActivity) activity).onSectionAttached(
-                getArguments().getInt(ARG_SECTION_NUMBER));
+                (Constants.Intent.ActivityIntents)getArguments().getSerializable(ARG_SECTION_NUMBER));
     }
 
 }
