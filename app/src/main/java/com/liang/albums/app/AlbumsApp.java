@@ -58,6 +58,7 @@ public class AlbumsApp extends Application{
         mApplication = this;
         wifiUtil = new WifiUtil(this);
         SocialAuthAdapter.Provider.INSTAGRAM.setCallBackUri("http://test.com");
+        authAdapter = initAuthAdapter(this);
         initImageLoader(getApplicationContext());
     }
 

@@ -2,6 +2,7 @@ package com.liang.albums.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -26,11 +27,18 @@ public class SettingWifiActivity extends FragmentActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        Intent intent = this.getIntent();
-
         fragmentManager.beginTransaction()
                 .add(R.id.container_setting,
                      PlaceholderFragment.newInstance(Constants.Intent.ActivityIntents.ACTIVITY_INTENT_WIFI));
 
+        startActivityForResult(new Intent(Settings.ACTION_WIFI_SETTINGS), 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "request code : "+requestCode+"  result code : "+resultCode);
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }

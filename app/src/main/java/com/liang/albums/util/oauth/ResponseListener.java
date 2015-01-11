@@ -1,6 +1,7 @@
 package com.liang.albums.util.oauth;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -32,6 +33,10 @@ public final class ResponseListener implements DialogListener {
         Log.d("Custom-UI", "providername = " + providerName);
         String token = AlbumsApp.getInstance().getAuthAdapter()
                 .getCurrentProvider().getAccessGrant().getKey();
+        Intent intent = new Intent();
+        intent.setAction(Constants.Broadcasts.INSTAGRAM_ACTION_LOGIN);
+        intent.putExtra(Constants.Broadcasts.EX_LOGIN_STATES, Constants.Broadcasts.LoginStates.EX_LOGIN_SUCCESS);
+        mContext.sendBroadcast(intent);
         AlbumsApp.getInstance().getPreferenceUtil()
                 .setPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, true);
 
