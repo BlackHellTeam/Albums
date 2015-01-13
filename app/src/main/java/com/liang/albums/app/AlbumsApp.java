@@ -2,9 +2,8 @@ package com.liang.albums.app;
 
 import android.app.Application;
 import android.content.Context;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 
+import com.liang.albums.util.Constants;
 import com.liang.albums.util.PreferenceUtil;
 import com.liang.albums.util.WifiUtil;
 import com.liang.albums.util.oauth.ResponseListener;
@@ -22,7 +21,7 @@ public class AlbumsApp extends Application{
 
     private static AlbumsApp mApplication;
 
-    private SocialAuthAdapter authAdapter;
+    private SocialAuthAdapter mAuthInstagramAdapter;
     private PreferenceUtil preferenceUtil;
     private WifiUtil wifiUtil;
 
@@ -31,14 +30,14 @@ public class AlbumsApp extends Application{
     }
 
     public synchronized SocialAuthAdapter initAuthAdapter(Context ctx){
-        if (authAdapter == null){
-            authAdapter = new SocialAuthAdapter(new ResponseListener(ctx));
+        if (mAuthInstagramAdapter == null){
+            mAuthInstagramAdapter = new SocialAuthAdapter(new ResponseListener(ctx, Constants.SocialInfo.ACCOUNT_INSTAGRAM));
         }
-        return authAdapter;
+        return mAuthInstagramAdapter;
     }
 
-    public synchronized SocialAuthAdapter getAuthAdapter(){
-        return authAdapter;
+    public synchronized SocialAuthAdapter getAuthInstagramAdapter(){
+        return mAuthInstagramAdapter;
     }
 
     public synchronized PreferenceUtil getPreferenceUtil(){
@@ -58,7 +57,7 @@ public class AlbumsApp extends Application{
         mApplication = this;
         wifiUtil = new WifiUtil(this);
         SocialAuthAdapter.Provider.INSTAGRAM.setCallBackUri("http://test.com");
-        authAdapter = initAuthAdapter(this);
+        mAuthInstagramAdapter = initAuthAdapter(this);
         initImageLoader(getApplicationContext());
     }
 

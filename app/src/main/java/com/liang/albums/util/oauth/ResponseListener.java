@@ -18,9 +18,11 @@ import org.brickred.socialauth.android.SocialAuthError;
 // To receive the response after authentication
 public final class ResponseListener implements DialogListener {
     private Context mContext;
+    private String mAccount;
 
-    public ResponseListener(Context ctx){
+    public ResponseListener(Context ctx, String account){
         this.mContext = ctx;
+        this.mAccount = account;
     }
 
     @Override
@@ -31,12 +33,9 @@ public final class ResponseListener implements DialogListener {
         // Get the provider
         String providerName = values.getString(SocialAuthAdapter.PROVIDER);
         Log.d("Custom-UI", "providername = " + providerName);
-        String token = AlbumsApp.getInstance().getAuthAdapter()
+        String token = AlbumsApp.getInstance().getAuthInstagramAdapter()
                 .getCurrentProvider().getAccessGrant().getKey();
-        Intent intent = new Intent();
-        intent.setAction(Constants.Broadcasts.INSTAGRAM_ACTION_LOGIN);
-        intent.putExtra(Constants.Broadcasts.EX_LOGIN_STATES, Constants.Broadcasts.LoginStates.EX_LOGIN_SUCCESS);
-        mContext.sendBroadcast(intent);
+        sendBroadcast(Constants.Broadcasts.ACTION_LOGIN, Constants.SocialInfo.LoginStates.EX_LOGIN_SUCCESS);
         AlbumsApp.getInstance().getPreferenceUtil()
                 .setPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, true);
 
@@ -46,6 +45,7 @@ public final class ResponseListener implements DialogListener {
     public void onError(SocialAuthError error) {
         Log.d("Custom-UI", "Error");
         error.printStackTrace();
+        sendBroadcast(Constants.Broadcasts.ACTION_LOGIN, Constants.SocialInfo.LoginStates.EX_LOGIN_ERROR);
         AlbumsApp.getInstance().getPreferenceUtil()
                 .setPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false);
     }
@@ -53,6 +53,7 @@ public final class ResponseListener implements DialogListener {
     @Override
     public void onCancel() {
         Log.d("Custom-UI", "Cancelled");
+        sendBroadcast(Constants.Broadcasts.ACTION_LOGIN, Constants.SocialInfo.LoginStates.EX_LOGIN_CANCEL);
         AlbumsApp.getInstance().getPreferenceUtil()
                 .setPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false);
     }
@@ -60,7 +61,16 @@ public final class ResponseListener implements DialogListener {
     @Override
     public void onBack() {
         Log.d("Custom-UI", "Dialog Closed by pressing Back Key");
+        sendBroadcast(Constants.Broadcasts.ACTION_LOGIN, Constants.SocialInfo.LoginStates.EX_LOGIN_BACK);
         AlbumsApp.getInstance().getPreferenceUtil()
                 .setPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false);
+    }
+
+    private void sendBroadcast(String action, Constants.SocialInfo.LoginStates state){
+        Intent intent = new Intent();
+        intent.setAction(action);
+        intent.putExtra(Constants.Intent.EX_ACCOUNT, mAccount);
+        intent.putExtra(Constants.Intent.EX_LOGIN_STATES, state);
+        mContext.sendBroadcast(intent);
     }
 }

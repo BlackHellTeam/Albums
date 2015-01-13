@@ -51,13 +51,11 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         mWifiUtil = AlbumsApp.getInstance().getWifiUtil();
-        mAuthAdapter = AlbumsApp.getInstance().getAuthAdapter();
+        mAuthAdapter = AlbumsApp.getInstance().getAuthInstagramAdapter();
 
         mReceiver = new SocialAccountsReceiver(this);
         IntentFilter filter = new IntentFilter();
-        filter.addAction(Constants.Broadcasts.FACEBOOK_ACTION_LOGIN);
-        filter.addAction(Constants.Broadcasts.INSTAGRAM_ACTION_LOGIN);
-        filter.addAction(Constants.Broadcasts.FLICKER_ACTION_LOGIN);
+        filter.addAction(Constants.Broadcasts.ACTION_LOGIN);
         registerReceiver(mReceiver, filter);
 
         mHandler = new Handler();
@@ -128,10 +126,10 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
     }
 
     @Override
-    public void onSignIn(Constants.Broadcasts.LoginStates state) {
+    public void onSignIn(String account, Constants.SocialInfo.LoginStates state) {
         // one account login success the goto the albums show
         CounterSub();
-        if(state == Constants.Broadcasts.LoginStates.EX_LOGIN_SUCCESS){
+        if(state == Constants.SocialInfo.LoginStates.EX_LOGIN_SUCCESS){
             mLoginStates = mLoginStates|true;
         }else{
             mLoginStates = mLoginStates|false;
@@ -144,12 +142,12 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
     }
 
     @Override
-    public void onSignOut() {
+    public void onSignOut(String account) {
 
     }
 
     @Override
-    public void onContentListChanged() {
+    public void onContentListChanged(String account) {
 
     }
 

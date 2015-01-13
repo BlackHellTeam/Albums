@@ -26,7 +26,7 @@ public class InstagramManagementFragment extends PlaceholderFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        authAdapter = AlbumsApp.getInstance().getAuthAdapter();
+        authAdapter = AlbumsApp.getInstance().getAuthInstagramAdapter();
     }
 
     @Override

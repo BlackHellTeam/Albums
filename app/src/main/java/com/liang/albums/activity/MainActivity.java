@@ -46,7 +46,7 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        authAdapter = AlbumsApp.getInstance().getAuthAdapter();
+        authAdapter = AlbumsApp.getInstance().getAuthInstagramAdapter();
 
         if (AlbumsApp.getInstance().getPreferenceUtil()
                 .getPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false)){

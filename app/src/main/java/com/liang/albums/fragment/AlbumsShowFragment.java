@@ -48,7 +48,7 @@ public class AlbumsShowFragment extends PlaceholderFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        authAdapter = AlbumsApp.getInstance().getAuthAdapter();
+        authAdapter = AlbumsApp.getInstance().getAuthInstagramAdapter();
 
         options = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.ic_empty)
