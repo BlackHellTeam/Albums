@@ -17,9 +17,13 @@ public class InstagramProvider extends BaseSocialProvider {
     public final static String AUTHORITY = "com.liang.albums.provider.instagram";
     public final static Uri CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/"+TABLE_NAME);
 
+    public InstagramProvider(){
+        super(TABLE_NAME);
+    }
+
     @Override
     public boolean onCreate() {
-        return false;
+        return super.onCreate();
     }
 
     @Override

@@ -37,7 +37,13 @@ public class BaseSocialProvider extends ContentProvider {
         URI_MATCHER.addURI(AUTHORITY, "images/#", MESSAGE_ID);
     }
 
-    private SQLiteOpenHelper mOpenHelper;
+    public SQLiteOpenHelper mOpenHelper;
+
+    public SocialColums mSocialColums;
+
+    public BaseSocialProvider(String tableName){
+        mSocialColums = new SocialColums(tableName);
+    }
 
     @Override
     public boolean onCreate() {
@@ -90,9 +96,9 @@ public class BaseSocialProvider extends ContentProvider {
         int match = URI_MATCHER.match(uri);
         switch (match) {
             case MESSAGES:
-                return SocialColums.CONTENT_TYPE;
+                return mSocialColums.CONTENT_TYPE;
             case MESSAGE_ID:
-                return SocialColums.CONTENT_ITEM_TYPE;
+                return mSocialColums.CONTENT_ITEM_TYPE;
             default:
                 throw new IllegalArgumentException("Unknown URL");
         }
@@ -219,26 +225,5 @@ public class BaseSocialProvider extends ContentProvider {
 
     }
 
-    public static final class SocialColums implements BaseColumns{
 
-        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.liang.base";
-        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.liang.base";
-        public static final String DEFAULT_SORT_ORDER = "_id ASC";
-
-        public static final String IMG_ID = "img_id";
-        public static final String FROM = "FROM";
-        public static final String MESSAGE = "message";
-        public static final String SCREEN_NAME = "screen_name";
-        public static final String DATE = "date";
-
-        public static String[] getRequiredColumns(){
-            String strs[] = {
-                    IMG_ID,
-                    FROM,
-                    MESSAGE,
-                    DATE
-            };
-            return strs;
-        }
-    }
 }
