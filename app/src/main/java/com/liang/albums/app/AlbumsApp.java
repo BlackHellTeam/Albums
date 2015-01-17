@@ -31,7 +31,7 @@ public class AlbumsApp extends Application{
     private SocialAuthAdapter mAuthInstagramAdapter;
     private PreferenceUtil preferenceUtil;
     private WifiUtil wifiUtil;
-    private UpdateContentsService mContentService;
+    private UpdateContentsService mContentService; // 后续对service的轮询时间进行设置
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -58,6 +58,10 @@ public class AlbumsApp extends Application{
         }catch (IllegalArgumentException e){
             Log.d(TAG, "Exception : Service wasn't bind!");
         }
+    }
+
+    public synchronized UpdateContentsService getContentService(){
+        return mContentService;
     }
 
     public synchronized static AlbumsApp getInstance(){

@@ -3,7 +3,6 @@ package com.liang.albums.db;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -11,7 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -22,9 +20,9 @@ public class BaseSocialProvider extends ContentProvider {
 
     private static final String TAG = "BaseSocialProvider";
 
-    public final static String TABLE_NAME = "base";
-    public final static String AUTHORITY = "com.liang.albums.provider.base";
-    public final static Uri CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/"+TABLE_NAME);
+    public String TABLE_NAME = "base";
+    public String AUTHORITY = "com.liang.albums.provider.";
+    public Uri CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/"+TABLE_NAME);
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(
             UriMatcher.NO_MATCH);
@@ -33,8 +31,7 @@ public class BaseSocialProvider extends ContentProvider {
     private static final int MESSAGE_ID = 2;
 
     static {
-        URI_MATCHER.addURI(AUTHORITY, "images", MESSAGES);
-        URI_MATCHER.addURI(AUTHORITY, "images/#", MESSAGE_ID);
+
     }
 
     public SQLiteOpenHelper mOpenHelper;
@@ -43,11 +40,19 @@ public class BaseSocialProvider extends ContentProvider {
 
     public BaseSocialProvider(String tableName){
         mSocialColums = new SocialColums(tableName);
+
+        TABLE_NAME = tableName;
+        AUTHORITY += TABLE_NAME;
+        CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/"+TABLE_NAME);
+
+
+        URI_MATCHER.addURI(AUTHORITY, "images", MESSAGES);
+        URI_MATCHER.addURI(AUTHORITY, "images/#", MESSAGE_ID);
     }
 
     @Override
     public boolean onCreate() {
-        mOpenHelper = new SocialDatabaseHelper(getContext());
+        mOpenHelper = new SocialDatabaseHelper(getContext(), TABLE_NAME);
 
         return true;
     }
@@ -185,45 +190,5 @@ public class BaseSocialProvider extends ContentProvider {
         getContext().getContentResolver().notifyChange(uri, null);
         return count;
     }
-
-    private static class SocialDatabaseHelper extends SQLiteOpenHelper {
-
-        private static final String DATABASE_NAME = "chat.db";
-        private static final int DATABASE_VERSION = 6;
-
-        public SocialDatabaseHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-
-            db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + SocialColums._ID
-                    + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + SocialColums.IMG_ID + " TEXT);"
-                    + SocialColums.DATE + " INTEGER,"
-                    + SocialColums.MESSAGE + " TEXT,"
-                    + SocialColums.FROM + " TEXT,"
-                    + SocialColums.SCREEN_NAME + " TEXT);");
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-            switch (oldVersion) {
-                case 3:
-                    db.execSQL("UPDATE " + TABLE_NAME + " SET READ=1");
-                case 4:
-                    db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD "
-                            + SocialColums.IMG_ID + " TEXT");
-                    break;
-                default:
-                    db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-                    onCreate(db);
-            }
-        }
-
-    }
-
 
 }
