@@ -34,6 +34,12 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
 
     private ArrayList<FeedModel> mInstagramList;
 
+    private enum SocialAccountEnum{
+        INSTAGRAM,
+        FACEBOOK,
+        FLICKER
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -44,7 +50,7 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
         intentFilter.addAction(Constants.Broadcasts.ACTION_LOGOUT);
         registerReceiver(mReceiver, intentFilter);
 
-        mInstagramList = new ArrayList<FeedModel>();
+        mInstagramList = new ArrayList<>();
     }
 
     @Override
@@ -86,7 +92,14 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
         @Override
         public void run() {
             // do while sleep...
-            mInstagramAuth.getFeedsAsync(new FeedDataListener());
+            do {
+                mInstagramAuth.getFeedsAsync(new FeedDataListener());
+                try {
+                    Thread.sleep(1000*60);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }while (true);
         }
     };
 
@@ -114,9 +127,17 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
                     tmpList.add(model);
                 }
 
-                synchronized (mInstagramList){
-                    mInstagramList = tmpList;
-                    notifyUpdate();
+                switch (provider){
+                    case "instagram":
+                        synchronized (mInstagramList){
+                            mInstagramList = tmpList;
+                            notifyUpdate(SocialAccountEnum.INSTAGRAM);
+                        }
+                        break;
+                    case "facebook":
+                        break;
+                    case "flicker":
+                        break;
                 }
 
             } else {
@@ -130,7 +151,24 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
     }
 
 
-    private void notifyUpdate(){
+    private void notifyUpdate(SocialAccountEnum act){
         // sendbroadcast
+        Intent intent = new Intent();
+        intent.setAction(Constants.Broadcasts.ACTION_CONTENTLIST_CHANGED);
+        switch (act){
+            case INSTAGRAM:
+                intent.putExtra(Constants.Intent.EX_ACCOUNT,
+                        Constants.Intent.ActivityIntents.ACTIVITY_INTENT_INSTAGRAM);
+                break;
+            case FACEBOOK:
+                intent.putExtra(Constants.Intent.EX_ACCOUNT,
+                        Constants.Intent.ActivityIntents.ACTIVITY_INTENT_FACEBOOK);
+                break;
+            case FLICKER:
+                intent.putExtra(Constants.Intent.EX_ACCOUNT,
+                        Constants.Intent.ActivityIntents.ACTIVITY_INTENT_FLICKR);
+                break;
+        }
+        sendBroadcast(intent);
     }
 }

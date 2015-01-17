@@ -32,6 +32,9 @@
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name" >
         </activity>
+
+        <service android:name=".service.UpdateContentsService" />
+
     </application>
 
 </manifest>

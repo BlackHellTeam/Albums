@@ -1,8 +1,14 @@
 package com.liang.albums.app;
 
 import android.app.Application;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+import android.util.Log;
 
+import com.liang.albums.service.UpdateContentsService;
 import com.liang.albums.util.Constants;
 import com.liang.albums.util.PreferenceUtil;
 import com.liang.albums.util.WifiUtil;
@@ -18,12 +24,41 @@ import org.brickred.socialauth.android.SocialAuthAdapter;
  * Created by liang on 15/1/3.
  */
 public class AlbumsApp extends Application{
+    private static final String TAG = "AlbumsApp";
 
     private static AlbumsApp mApplication;
 
     private SocialAuthAdapter mAuthInstagramAdapter;
     private PreferenceUtil preferenceUtil;
     private WifiUtil wifiUtil;
+    private UpdateContentsService mContentService;
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.d(TAG, "onServiceConnected");
+            mContentService = ((UpdateContentsService.UpdateContentsServiceBinder)service).getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.d(TAG, "onServiceDisconnected");
+            mContentService = null;
+        }
+    };
+
+    private void bindMutiService(){
+        Intent intent = new Intent(this, UpdateContentsService.class);
+        bindService(intent,mServiceConnection, BIND_AUTO_CREATE);
+
+    }
+
+    private void unbindMutiService(){
+        try {
+            unbindService(mServiceConnection);
+        }catch (IllegalArgumentException e){
+            Log.d(TAG, "Exception : Service wasn't bind!");
+        }
+    }
 
     public synchronized static AlbumsApp getInstance(){
         return mApplication;
@@ -59,6 +94,8 @@ public class AlbumsApp extends Application{
         SocialAuthAdapter.Provider.INSTAGRAM.setCallBackUri("http://test.com");
         mAuthInstagramAdapter = initAuthAdapter(this);
         initImageLoader(getApplicationContext());
+
+        bindMutiService();
     }
 
     public static void initImageLoader(Context context) {
@@ -77,4 +114,5 @@ public class AlbumsApp extends Application{
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config);
     }
+
 }
