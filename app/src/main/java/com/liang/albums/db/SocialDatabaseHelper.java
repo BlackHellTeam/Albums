@@ -23,7 +23,7 @@ public class SocialDatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + SocialColums._ID
                 + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + SocialColums.IMG_ID + " TEXT);"
+                + SocialColums.IMG_ID + " TEXT,"
                 + SocialColums.DATE + " INTEGER,"
                 + SocialColums.MESSAGE + " TEXT,"
                 + SocialColums.FROM + " TEXT,"

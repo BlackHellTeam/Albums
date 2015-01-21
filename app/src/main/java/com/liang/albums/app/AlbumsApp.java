@@ -48,8 +48,8 @@ public class AlbumsApp extends Application{
 
     private void bindMutiService(){
         Intent intent = new Intent(this, UpdateContentsService.class);
+//        startService(intent);
         bindService(intent,mServiceConnection, BIND_AUTO_CREATE);
-
     }
 
     private void unbindMutiService(){

@@ -12,7 +12,7 @@ public class SocialColums implements BaseColumns {
     public static final String DEFAULT_SORT_ORDER = "_id ASC";
 
     public static final String IMG_ID = "img_id";
-    public static final String FROM = "FROM";
+    public static final String FROM = "author";
     public static final String MESSAGE = "message";
     public static final String SCREEN_NAME = "screen_name";
     public static final String DATE = "date";

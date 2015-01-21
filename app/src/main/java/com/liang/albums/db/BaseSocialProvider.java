@@ -3,6 +3,7 @@ package com.liang.albums.db;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -46,14 +47,16 @@ public class BaseSocialProvider extends ContentProvider {
         CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/"+TABLE_NAME);
 
 
-        URI_MATCHER.addURI(AUTHORITY, "images", MESSAGES);
-        URI_MATCHER.addURI(AUTHORITY, "images/#", MESSAGE_ID);
+        URI_MATCHER.addURI(AUTHORITY, "instagram", MESSAGES);
+//        URI_MATCHER.addURI(AUTHORITY, "images", MESSAGES);
+        URI_MATCHER.addURI(AUTHORITY, "instagram/#", MESSAGE_ID);
+
     }
 
     @Override
     public boolean onCreate() {
-        mOpenHelper = new SocialDatabaseHelper(getContext(), TABLE_NAME);
-
+//        Context ctx = getContext();
+//        mOpenHelper = new SocialDatabaseHelper(ctx, TABLE_NAME);
         return true;
     }
 

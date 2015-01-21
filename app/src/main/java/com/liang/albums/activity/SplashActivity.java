@@ -41,7 +41,7 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
 
     private Handler mHandler;
 
-    private int mLoginCounter;
+    private Integer mLoginCounter = new Integer(0);
     private boolean mLoginStates = false;
 
     private SocialAccountsReceiver mReceiver;
@@ -108,34 +108,48 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
             startActivity(new Intent(this, SettingWifiActivity.class));
             finish();
         }
-
-        if(hasInsAccount){
-            mAuthAdapter.authorize(this, SocialAuthAdapter.Provider.INSTAGRAM);
-            CounterAdd();
-        }
-
-        if(hasFBAccount){
-            mAuthAdapter.authorize(this, SocialAuthAdapter.Provider.FACEBOOK);
-            CounterAdd();
-        }
-
-        if(hasFlickerAccount){
-            mAuthAdapter.authorize(this, SocialAuthAdapter.Provider.FLICKR);
-            CounterAdd();
-        }
+//
+//        if(hasInsAccount){
+//            mAuthAdapter.authorize(this, SocialAuthAdapter.Provider.INSTAGRAM);
+//            //CounterAdd();
+//            synchronized (mLoginCounter){
+//                mLoginCounter++;
+//            }
+//        }
+//
+//        if(hasFBAccount){
+//            mAuthAdapter.authorize(this, SocialAuthAdapter.Provider.FACEBOOK);
+//            //CounterAdd();
+//            synchronized (mLoginCounter){
+//                mLoginCounter++;
+//            }
+//        }
+//
+//        if(hasFlickerAccount){
+//            mAuthAdapter.authorize(this, SocialAuthAdapter.Provider.FLICKR);
+//            //CounterAdd();
+//            synchronized (mLoginCounter){
+//                mLoginCounter++;
+//            }
+//        }
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     @Override
     public void onSignIn(String account, Constants.SocialInfo.LoginStates state) {
         // one account login success the goto the albums show
-        CounterSub();
+        // CounterSub();
+        synchronized (mLoginCounter){
+            mLoginCounter--;
+        }
         if(state == Constants.SocialInfo.LoginStates.EX_LOGIN_SUCCESS){
             mLoginStates = mLoginStates|true;
         }else{
             mLoginStates = mLoginStates|false;
         }
 
-        if(getLoginCounter() == 0 && mLoginStates){
+        if(mLoginCounter == 0 && mLoginStates){
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
@@ -150,19 +164,19 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
     public void onContentListChanged(String account) {
 
     }
-
-    private synchronized void CounterAdd(){
-        mLoginCounter++;
-        Log.d(TAG, "ADD : Login Counter = " + mLoginCounter);
-    }
-
-    private synchronized void CounterSub(){
-        mLoginCounter--;
-        Log.d(TAG, "SUB : Login Counter = " + mLoginCounter);
-    }
-
-    private synchronized int getLoginCounter(){
-        Log.d(TAG, "GET : Login Counter = " + mLoginCounter);
-        return mLoginCounter;
-    }
+//
+//    private synchronized void CounterAdd(){
+//        mLoginCounter++;
+//        Log.d(TAG, "ADD : Login Counter = " + mLoginCounter);
+//    }
+//
+//    private synchronized void CounterSub(){
+//        mLoginCounter--;
+//        Log.d(TAG, "SUB : Login Counter = " + mLoginCounter);
+//    }
+//
+//    private synchronized int getLoginCounter(){
+//        Log.d(TAG, "GET : Login Counter = " + mLoginCounter);
+//        return mLoginCounter;
+//    }
 }

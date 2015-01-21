@@ -34,6 +34,10 @@
         </activity>
 
         <service android:name=".service.UpdateContentsService" />
+        
+        <provider
+            android:authorities="com.liang.albums.provider.instagram"
+            android:name=".db.InstagramProvider"/>
 
     </application>
 

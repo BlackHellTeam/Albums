@@ -1,10 +1,8 @@
 package com.liang.albums.db;
 
-import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.BaseColumns;
 
 /**
  * Created by liang on 15/1/14.
@@ -18,11 +16,14 @@ public class InstagramProvider extends BaseSocialProvider {
     public final static Uri CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/"+TABLE_NAME);
 
     public InstagramProvider(){
+
         super(TABLE_NAME);
+
     }
 
     @Override
     public boolean onCreate() {
+        mOpenHelper = new SocialDatabaseHelper(getContext(), TABLE_NAME);
         return super.onCreate();
     }
 

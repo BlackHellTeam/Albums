@@ -2,6 +2,7 @@ package com.liang.albums.service;
 
 import android.app.Service;
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -33,11 +34,15 @@ import java.util.List;
  */
 public class UpdateContentsService extends Service implements SocialEventsHandler{
 
+    private static final String TAG = "UpdateContentsService";
+
     private SocialAccountsReceiver mReceiver;
     private UpdateContentsServiceBinder mBinder = new UpdateContentsServiceBinder();
     private Handler mMainHandler = new Handler();
 
-    private InstagramProvider mInstagramProvider;
+    private ContentResolver mContentResolver;
+
+//    private InstagramProvider mInstagramProvider;
 
     private ArrayList<FeedModel> mInstagramList;
 
@@ -57,9 +62,13 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
         intentFilter.addAction(Constants.Broadcasts.ACTION_LOGOUT);
         registerReceiver(mReceiver, intentFilter);
 
+        mContentResolver = getContentResolver();
+
         mInstagramList = new ArrayList<>();
 
-        mInstagramProvider = new InstagramProvider();
+//        mInstagramProvider = new InstagramProvider();
+
+        mMainHandler.postDelayed(rUpdateList, 10000);
     }
 
     @Override
@@ -75,7 +84,8 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mMainHandler.postDelayed(rUpdateList, 1000);//1000*60*5);
+//        mMainHandler.postDelayed(rUpdateList, 1000);//1000*60*5);
+        Log.d(TAG, "onStartCommand");
         return START_STICKY;
     }
 
@@ -101,14 +111,8 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
         @Override
         public void run() {
             // do while sleep...
-            do {
-                mInstagramAuth.getFeedsAsync(new FeedDataListener());
-                try {
-                    Thread.sleep(1000*60);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }while (true);
+            mInstagramAuth.getFeedsAsync(new FeedDataListener());
+ //           mMainHandler.postDelayed(this, 1000*60);
         }
     };
 
@@ -157,6 +161,7 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
 
         @Override
         public void onError(SocialAuthError e) {
+            Log.d(TAG, e.getMessage());
         }
     }
 
@@ -190,18 +195,18 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
 
         switch (act){
             case INSTAGRAM:
-                provider = mInstagramProvider;
+//                provider = mInstagramProvider;
                 list = mInstagramList;
                 uri = InstagramProvider.CONTENT_URI;
                 break;
             case FACEBOOK:
-                provider = mInstagramProvider; // fix me
+//                provider = mInstagramProvider; // fix me
                 break;
             case FLICKER:
-                provider = mInstagramProvider; // fix me
+//                provider = mInstagramProvider; // fix me
                 break;
             default:
-                provider = mInstagramProvider; // fix me
+//                provider = mInstagramProvider; // fix me
         }
 
         // update database
@@ -213,7 +218,8 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
             value.put(SocialColums.MESSAGE, list.get(i).getMESSAGE());
             value.put(SocialColums.SCREEN_NAME, list.get(i).getSCREENNAME());
 
-            provider.insert(uri, value);
+            //provider.insert(uri, value);
+            mContentResolver.insert(uri, value);
         }
 
     }
