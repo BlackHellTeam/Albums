@@ -143,6 +143,7 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
         synchronized (mLoginCounter){
             mLoginCounter--;
         }
+
         if(state == Constants.SocialInfo.LoginStates.EX_LOGIN_SUCCESS){
             mLoginStates = mLoginStates|true;
         }else{

@@ -3,7 +3,6 @@ package com.liang.albums.db;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -55,8 +54,6 @@ public class BaseSocialProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-//        Context ctx = getContext();
-//        mOpenHelper = new SocialDatabaseHelper(ctx, TABLE_NAME);
         return true;
     }
 

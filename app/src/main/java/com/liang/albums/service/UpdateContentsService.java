@@ -5,7 +5,6 @@ import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
@@ -17,7 +16,6 @@ import com.liang.albums.db.InstagramProvider;
 import com.liang.albums.db.SocialColums;
 import com.liang.albums.interfaces.SocialEventsHandler;
 import com.liang.albums.model.FeedModel;
-import com.liang.albums.receiver.SocialAccountsReceiver;
 import com.liang.albums.util.Constants;
 
 import org.brickred.socialauth.Feed;
@@ -36,13 +34,11 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
 
     private static final String TAG = "UpdateContentsService";
 
-    private SocialAccountsReceiver mReceiver;
+
     private UpdateContentsServiceBinder mBinder = new UpdateContentsServiceBinder();
     private Handler mMainHandler = new Handler();
 
     private ContentResolver mContentResolver;
-
-//    private InstagramProvider mInstagramProvider;
 
     private ArrayList<FeedModel> mInstagramList;
 
@@ -55,18 +51,11 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
     @Override
     public void onCreate() {
         super.onCreate();
-        mReceiver = new SocialAccountsReceiver(this);
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Constants.Broadcasts.ACTION_LOGIN);
-        intentFilter.addAction(Constants.Broadcasts.ACTION_LOGOUT);
-        registerReceiver(mReceiver, intentFilter);
 
         mContentResolver = getContentResolver();
 
         mInstagramList = new ArrayList<>();
-
-//        mInstagramProvider = new InstagramProvider();
 
         mMainHandler.postDelayed(rUpdateList, 10000);
     }
@@ -105,13 +94,16 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
     }
 
     private Runnable rUpdateList = new Runnable() {
-        private SocialAuthAdapter mInstagramAuth =
-                AlbumsApp.getInstance().getAuthInstagramAdapter();
 
         @Override
         public void run() {
-            // do while sleep...
-            mInstagramAuth.getFeedsAsync(new FeedDataListener());
+
+            SocialAuthAdapter mInstagramAuth =
+                    AlbumsApp.getInstance().getAuthInstagramAdapter();
+            if(AlbumsApp.getInstance().getPreferenceUtil()
+                    .getPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false)) {
+                mInstagramAuth.getFeedsAsync(new FeedDataListener());
+            }
  //           mMainHandler.postDelayed(this, 1000*60);
         }
     };
