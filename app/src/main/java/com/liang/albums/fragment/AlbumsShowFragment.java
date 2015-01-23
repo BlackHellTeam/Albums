@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.liang.albums.R;
 import com.liang.albums.app.AlbumsApp;
 import com.liang.albums.util.Constants;
+import com.liang.albums.view.JazzyViewPager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -38,7 +39,8 @@ import java.util.List;
 public class AlbumsShowFragment extends PlaceholderFragment {
 
     private SocialAuthAdapter authAdapter;
-    private ViewPager mPager;
+    //private ViewPager mPager;
+    private JazzyViewPager mPager;
     private List<Feed> feedList;
 
     private ProgressDialog mDialog;
@@ -69,7 +71,8 @@ public class AlbumsShowFragment extends PlaceholderFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_albums, container, false);
 
-        mPager = (ViewPager)rootView.findViewById(R.id.pager_albums_show);
+        mPager = (JazzyViewPager)rootView.findViewById(R.id.pager_albums_show);
+        setupJazziness(JazzyViewPager.TransitionEffect.Stack);
 
         mDialog = new ProgressDialog(getActivity());
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -89,6 +92,13 @@ public class AlbumsShowFragment extends PlaceholderFragment {
             mDialog.show();
         }
 
+    }
+
+    private void setupJazziness(JazzyViewPager.TransitionEffect effect)
+    {
+        mPager.setTransitionEffect(effect);
+        mPager.setPageMargin(30);
+//		mJazzy.setOutlineEnabled(true);
     }
 
     // To receive the feed response after authentication
@@ -141,6 +151,7 @@ public class AlbumsShowFragment extends PlaceholderFragment {
             View imageLayout = inflater.inflate(R.layout.item_pager_image, view, false);
             assert imageLayout != null;
             ImageView imageView = (ImageView) imageLayout.findViewById(R.id.img_pager_item);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.loading_pager_item);
 
             ImageLoader.getInstance().displayImage(feedList.get(position).getMessage(),
@@ -182,7 +193,8 @@ public class AlbumsShowFragment extends PlaceholderFragment {
                 }
             });
 
-            view.addView(imageLayout, 0);
+            view.addView(imageLayout);
+            mPager.setObjectForPosition(imageLayout, position);
             return imageLayout;
         }
 
