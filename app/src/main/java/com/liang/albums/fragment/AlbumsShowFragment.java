@@ -3,6 +3,8 @@ package com.liang.albums.fragment;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -32,6 +34,10 @@ import org.brickred.socialauth.android.SocialAuthError;
 import org.brickred.socialauth.android.SocialAuthListener;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by liang on 15/1/3.
@@ -42,9 +48,12 @@ public class AlbumsShowFragment extends PlaceholderFragment {
     //private ViewPager mPager;
     private JazzyViewPager mPager;
     private List<Feed> feedList;
+    private int mCurrentItem = 0;
 
     private ProgressDialog mDialog;
-    DisplayImageOptions options;
+    private DisplayImageOptions options;
+
+    private ScheduledExecutorService mScheduledExecutorService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +74,14 @@ public class AlbumsShowFragment extends PlaceholderFragment {
 
         //handler = new ImageShowHandle();
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        mScheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        mScheduledExecutorService.scheduleWithFixedDelay(new ViewPagerTask(), 10, 10, TimeUnit.SECONDS);
     }
 
     @Override
@@ -212,5 +229,24 @@ public class AlbumsShowFragment extends PlaceholderFragment {
             return null;
         }
     }
+
+
+    private class ViewPagerTask implements Runnable{
+
+        @Override
+        public void run() {
+            if(feedList!=null&&feedList.size()!=0) {
+                mCurrentItem = (mCurrentItem + 1) % feedList.size();
+                mPagerHandler.obtainMessage().sendToTarget();
+            }
+        }
+    }
+
+    private Handler mPagerHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            mPager.setCurrentItem(mCurrentItem, true);
+        }
+    };
 
 }
