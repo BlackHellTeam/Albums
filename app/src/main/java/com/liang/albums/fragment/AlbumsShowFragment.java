@@ -115,6 +115,7 @@ public class AlbumsShowFragment extends PlaceholderFragment {
     {
         mPager.setTransitionEffect(effect);
         mPager.setPageMargin(30);
+        mPager.setScrollDurationFactor(5);
 //		mJazzy.setOutlineEnabled(true);
     }
 
