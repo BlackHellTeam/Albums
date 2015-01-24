@@ -116,6 +116,23 @@ public class AlbumsShowFragment extends PlaceholderFragment {
         mPager.setTransitionEffect(effect);
         mPager.setPageMargin(30);
         mPager.setScrollDurationFactor(5);
+
+        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mCurrentItem = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 //		mJazzy.setOutlineEnabled(true);
     }
 
