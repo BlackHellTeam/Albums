@@ -17,6 +17,8 @@ import org.brickred.socialauth.android.SocialAuthError;
  */
 // To receive the response after authentication
 public final class ResponseListener implements DialogListener {
+    private static final String TAG = "ResponseListener";
+
     private Context mContext;
     private String mAccount;
 
@@ -67,6 +69,7 @@ public final class ResponseListener implements DialogListener {
     }
 
     private void sendBroadcast(String action, Constants.SocialInfo.LoginStates state){
+        Log.d(TAG, "sendBroadcast");
         Intent intent = new Intent();
         intent.setAction(action);
         intent.putExtra(Constants.Intent.EX_ACCOUNT, mAccount);

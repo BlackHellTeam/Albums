@@ -5,7 +5,6 @@ package com.liang.albums.fragment;
  */
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -30,22 +29,22 @@ public class PlaceholderFragment extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PlaceholderFragment newInstance(Constants.Intent.ActivityIntents section) {
+    public static PlaceholderFragment newInstance(Constants.Extra.FragmentSection section) {
 
         PlaceholderFragment fragment = null;// = new PlaceholderFragment();
 
         switch (section){
-            case ACTIVITY_INTENT_ALBUMS:
+            case ACTIVITY_SECTION_ALBUMS:
                 fragment = new AlbumsShowFragment();
                 break;
-            case ACTIVITY_INTENT_INSTAGRAM:
+            case ACTIVITY_SECTION_INSTAGRAM:
                 fragment = new InstagramManagementFragment();
                 break;
-            case ACTIVITY_INTENT_WIFI:
+            case ACTIVITY_SECTION_WIFI:
                 fragment = new WifiSettingFragment();
                 break;
-            case ACTIVITY_INTENT_FACEBOOK:
-            case ACTIVITY_INTENT_FLICKR:
+            case ACTIVITY_SECTION_FACEBOOK:
+            case ACTIVITY_SECTION_FLICKR:
             default:
                 fragment = new PlaceholderFragment();
         }
@@ -71,7 +70,7 @@ public class PlaceholderFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         ((MainActivity) activity).onSectionAttached(
-                (Constants.Intent.ActivityIntents)
+                (Constants.Extra.FragmentSection)
                         getArguments().getSerializable(ARG_SECTION_NUMBER));
     }
 

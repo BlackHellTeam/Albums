@@ -29,7 +29,7 @@ public class SettingWifiActivity extends FragmentActivity {
 
         fragmentManager.beginTransaction()
                 .add(R.id.container_setting,
-                     PlaceholderFragment.newInstance(Constants.Intent.ActivityIntents.ACTIVITY_INTENT_WIFI));
+                     PlaceholderFragment.newInstance(Constants.Extra.FragmentSection.ACTIVITY_SECTION_WIFI));
 
         startActivityForResult(new Intent(Settings.ACTION_WIFI_SETTINGS), 0);
     }

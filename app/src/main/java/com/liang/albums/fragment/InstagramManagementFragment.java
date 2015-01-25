@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,9 @@ import org.brickred.socialauth.android.SocialAuthAdapter;
 /**
  * Created by liang on 15/1/3.
  */
-public class InstagramManagementFragment extends PlaceholderFragment implements SocialEventsHandler {
+public class InstagramManagementFragment extends PlaceholderFragment
+        implements SocialEventsHandler {
+    private static final String TAG = "InstagramManagementFragment";
 
     private SocialAuthAdapter authAdapter;
     private Button btnLogin;
@@ -51,7 +54,12 @@ public class InstagramManagementFragment extends PlaceholderFragment implements 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                authAdapter.authorize(getActivity(), SocialAuthAdapter.Provider.INSTAGRAM);
+                try {
+                    authAdapter.authorize(getActivity(), SocialAuthAdapter.Provider.INSTAGRAM);
+                }catch (Exception e){
+                    Log.d(TAG, "authAdapter.authorize failed : "+e.getMessage());
+                }
+
             }
         });
 
@@ -59,7 +67,7 @@ public class InstagramManagementFragment extends PlaceholderFragment implements 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                authAdapter.signOut(getActivity(), SocialAuthAdapter.Provider.INSTAGRAM.name());
+                authAdapter.signOut(getActivity(), SocialAuthAdapter.Provider.INSTAGRAM.toString());
                 AlbumsApp.getInstance().getPreferenceUtil()
                         .setPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false);
                 Intent intent = new Intent();
@@ -89,13 +97,15 @@ public class InstagramManagementFragment extends PlaceholderFragment implements 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         ((MainActivity) activity).onSectionAttached(
-                (Constants.Intent.ActivityIntents)getArguments().getSerializable(ARG_SECTION_NUMBER));
+                (Constants.Extra.FragmentSection)getArguments().getSerializable(ARG_SECTION_NUMBER));
     }
 
     @Override
     public void onSignIn(String account, Constants.SocialInfo.LoginStates state) {
-        btnLogin.setClickable(false);
-        btnLogout.setClickable(true);
+        if(state == Constants.SocialInfo.LoginStates.EX_LOGIN_SUCCESS) {
+            btnLogin.setClickable(false);
+            btnLogout.setClickable(true);
+        }
     }
 
     @Override

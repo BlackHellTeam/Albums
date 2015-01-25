@@ -4,6 +4,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
@@ -30,6 +31,8 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
 
+    private static final String TAG = "MainActivity";
+
     private SocialAuthAdapter authAdapter;
 
     @Override
@@ -51,7 +54,13 @@ public class MainActivity extends ActionBarActivity
         if (AlbumsApp.getInstance().getPreferenceUtil()
                 .getPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false)){
             // has a account
-            authAdapter.authorize(this, SocialAuthAdapter.Provider.INSTAGRAM);
+            try {
+                authAdapter.authorize(this, SocialAuthAdapter.Provider.INSTAGRAM);
+            }catch (Exception e){
+                Log.d(TAG, e.getMessage());
+                AlbumsApp.getInstance().getPreferenceUtil()
+                        .setPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false);
+            }
         }
 
     }
@@ -66,32 +75,32 @@ public class MainActivity extends ActionBarActivity
                 .commit();
     }
 
-    private Constants.Intent.ActivityIntents castPositionToSection(int position){
+    private Constants.Extra.FragmentSection castPositionToSection(int position){
         switch (position){
             case 0:
-                return Constants.Intent.ActivityIntents.ACTIVITY_INTENT_ALBUMS;
+                return Constants.Extra.FragmentSection.ACTIVITY_SECTION_ALBUMS;
             case 1:
-                return Constants.Intent.ActivityIntents.ACTIVITY_INTENT_FACEBOOK;
+                return Constants.Extra.FragmentSection.ACTIVITY_SECTION_FACEBOOK;
             case 2:
-                return Constants.Intent.ActivityIntents.ACTIVITY_INTENT_INSTAGRAM;
+                return Constants.Extra.FragmentSection.ACTIVITY_SECTION_INSTAGRAM;
             case 3:
-                return Constants.Intent.ActivityIntents.ACTIVITY_INTENT_FLICKR;
+                return Constants.Extra.FragmentSection.ACTIVITY_SECTION_FLICKR;
         }
-        return Constants.Intent.ActivityIntents.ACTIVITY_INTENT_ALBUMS;
+        return Constants.Extra.FragmentSection.ACTIVITY_SECTION_ALBUMS;
     }
 
-    public void onSectionAttached(Constants.Intent.ActivityIntents section) {
+    public void onSectionAttached(Constants.Extra.FragmentSection section) {
         switch (section) {
-            case ACTIVITY_INTENT_ALBUMS:
+            case ACTIVITY_SECTION_ALBUMS:
                 mTitle = getString(R.string.title_section0);
                 break;
-            case ACTIVITY_INTENT_FACEBOOK:
+            case ACTIVITY_SECTION_FACEBOOK:
                 mTitle = getString(R.string.title_section1);
                 break;
-            case ACTIVITY_INTENT_INSTAGRAM:
+            case ACTIVITY_SECTION_INSTAGRAM:
                 mTitle = getString(R.string.title_section2);
                 break;
-            case ACTIVITY_INTENT_FLICKR:
+            case ACTIVITY_SECTION_FLICKR:
                 mTitle = getString(R.string.title_section3);
                 break;
         }

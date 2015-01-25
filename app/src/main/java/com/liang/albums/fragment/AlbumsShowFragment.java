@@ -1,11 +1,13 @@
 package com.liang.albums.fragment;
 
 import android.app.ProgressDialog;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -19,6 +21,8 @@ import android.widget.Toast;
 
 import com.liang.albums.R;
 import com.liang.albums.app.AlbumsApp;
+import com.liang.albums.interfaces.SocialEventsHandler;
+import com.liang.albums.receiver.SocialAccountsReceiver;
 import com.liang.albums.util.Constants;
 import com.liang.albums.view.JazzyViewPager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -33,6 +37,7 @@ import org.brickred.socialauth.android.SocialAuthAdapter;
 import org.brickred.socialauth.android.SocialAuthError;
 import org.brickred.socialauth.android.SocialAuthListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,7 +47,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by liang on 15/1/3.
  */
-public class AlbumsShowFragment extends PlaceholderFragment {
+public class AlbumsShowFragment extends PlaceholderFragment implements SocialEventsHandler {
+
+    private static final String TAG = "AlbumsShowFragment";
 
     private SocialAuthAdapter authAdapter;
     //private ViewPager mPager;
@@ -54,6 +61,7 @@ public class AlbumsShowFragment extends PlaceholderFragment {
     private DisplayImageOptions options;
 
     private ScheduledExecutorService mScheduledExecutorService;
+    private SocialAccountsReceiver mReceiver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +80,15 @@ public class AlbumsShowFragment extends PlaceholderFragment {
                 .displayer(new FadeInBitmapDisplayer(300))
                 .build();
 
+        mReceiver = new SocialAccountsReceiver(this);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.Broadcasts.ACTION_LOGIN);
+        intentFilter.addAction(Constants.Broadcasts.ACTION_LOGOUT);
+        intentFilter.addAction(Constants.Broadcasts.ACTION_CONTENTLIST_CHANGED);
+        getActivity().registerReceiver(mReceiver, intentFilter);
+
+        feedList = AlbumsApp.getInstance().getContentService().getInstagramList();
         //handler = new ImageShowHandle();
 
     }
@@ -105,8 +122,9 @@ public class AlbumsShowFragment extends PlaceholderFragment {
         super.onResume();
         if (AlbumsApp.getInstance().getPreferenceUtil()
                 .getPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false)){
-            authAdapter.getFeedsAsync(new FeedDataListener());
-            mDialog.show();
+//            authAdapter.getFeedsAsync(new FeedDataListener());
+//            mDialog.show();
+            feedList = AlbumsApp.getInstance().getContentService().getInstagramList();
         }
 
     }
@@ -117,23 +135,27 @@ public class AlbumsShowFragment extends PlaceholderFragment {
         mPager.setPageMargin(30);
         mPager.setScrollDurationFactor(5);
 
-        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                mCurrentItem = position;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        mPager.setAdapter(new ImageAdapter());
+        mPager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION, mCurrentItem));
 //		mJazzy.setOutlineEnabled(true);
+    }
+
+    @Override
+    public void onSignIn(String account, Constants.SocialInfo.LoginStates state) {
+
+    }
+
+    @Override
+    public void onSignOut(String account) {
+
+    }
+
+    @Override
+    public void onContentListChanged(String account) {
+        Log.d(TAG, "onContentListChanged");
+        feedList = AlbumsApp.getInstance().getContentService().getInstagramList();
+        mPager.setAdapter(new ImageAdapter());
+        mPager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION, 0));
     }
 
     // To receive the feed response after authentication
@@ -168,7 +190,8 @@ public class AlbumsShowFragment extends PlaceholderFragment {
         private LayoutInflater inflater;
 
         ImageAdapter() {
-            inflater = LayoutInflater.from(getActivity());
+            FragmentActivity tmp = getActivity();
+            inflater = LayoutInflater.from(tmp);
         }
 
         @Override

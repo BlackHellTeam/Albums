@@ -5,6 +5,7 @@ import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
@@ -16,12 +17,14 @@ import com.liang.albums.db.InstagramProvider;
 import com.liang.albums.db.SocialColums;
 import com.liang.albums.interfaces.SocialEventsHandler;
 import com.liang.albums.model.FeedModel;
+import com.liang.albums.receiver.SocialAccountsReceiver;
 import com.liang.albums.util.Constants;
 
 import org.brickred.socialauth.Feed;
 import org.brickred.socialauth.android.SocialAuthAdapter;
 import org.brickred.socialauth.android.SocialAuthError;
 import org.brickred.socialauth.android.SocialAuthListener;
+import org.brickred.socialauth.exception.SocialAuthException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +42,15 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
     private Handler mMainHandler = new Handler();
 
     private ContentResolver mContentResolver;
+    private SocialAccountsReceiver mReceiver;
 
-    private ArrayList<FeedModel> mInstagramList;
+    private List<Feed> mInstagramList;
+
+    public List<Feed> getInstagramList(){
+        synchronized (mInstagramList){
+            return mInstagramList;
+        }
+    }
 
     private enum SocialAccountEnum{
         INSTAGRAM,
@@ -57,7 +67,13 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
 
         mInstagramList = new ArrayList<>();
 
-        mMainHandler.postDelayed(rUpdateList, 10000);
+        mReceiver = new SocialAccountsReceiver(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.Broadcasts.ACTION_LOGIN);
+        intentFilter.addAction(Constants.Broadcasts.ACTION_LOGOUT);
+        intentFilter.addAction(Constants.Broadcasts.ACTION_CONTENTLIST_CHANGED);
+        registerReceiver(mReceiver, intentFilter);
+
     }
 
     @Override
@@ -80,7 +96,8 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
 
     @Override
     public void onSignIn(String account, Constants.SocialInfo.LoginStates state) {
-
+        Log.d(TAG, "onSignIn");
+        mMainHandler.postDelayed(rUpdateList, 0);
     }
 
     @Override
@@ -102,9 +119,16 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
                     AlbumsApp.getInstance().getAuthInstagramAdapter();
             if(AlbumsApp.getInstance().getPreferenceUtil()
                     .getPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false)) {
-                mInstagramAuth.getFeedsAsync(new FeedDataListener());
+                try {
+                    mInstagramAuth.getFeedsAsync(new FeedDataListener());
+                }catch (Exception e){
+                    Log.d(TAG, e.getMessage());
+                    AlbumsApp.getInstance().getPreferenceUtil()
+                            .setPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false);
+                }
+
             }
- //           mMainHandler.postDelayed(this, 1000*60);
+            mMainHandler.postDelayed(this, 1000 * 60);
         }
     };
 
@@ -117,11 +141,11 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
 
             if (feedList != null && feedList.size() > 0) {
 
-                ArrayList<FeedModel> tmpList = new ArrayList<FeedModel>();
+                ArrayList<FeedModel> tmpList = new ArrayList<>();
 
-                Log.d("AlbumsShow", "Feed List size = "+feedList.size());
+                Log.d(TAG, "Feed List size = "+feedList.size());
                 for(int i=0;i<feedList.size();++i){
-                    Log.d("AlbumsShow", "Feed List [" + i + "] = " +feedList.get(i).getMessage());
+                    Log.d(TAG, "Feed List [" + i + "] = " +feedList.get(i).getMessage());
                     FeedModel model = new FeedModel();
                     model.setDATE(feedList.get(i).getCreatedAt());
                     model.setFROM(feedList.get(i).getFrom());
@@ -135,9 +159,11 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
                 switch (provider){
                     case "instagram":
                         synchronized (mInstagramList){
-                            mInstagramList = tmpList;
-                            updateDatabase(SocialAccountEnum.INSTAGRAM);
-                            notifyUpdate(SocialAccountEnum.INSTAGRAM);
+                            if(mInstagramList.size()!=feedList.size()){
+                                mInstagramList = feedList;
+                                updateDatabase(SocialAccountEnum.INSTAGRAM);
+                                notifyUpdate(SocialAccountEnum.INSTAGRAM);
+                            }
                         }
                         break;
                     case "facebook":
@@ -179,6 +205,22 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
         sendBroadcast(intent);
     }
 
+    private List<FeedModel> feedListToModelList(List<Feed> list){
+        ArrayList<FeedModel> tmpList = new ArrayList<>();
+        for(int i=0;i<list.size();++i){
+            Log.d("AlbumsShow", "Feed List [" + i + "] = " +list.get(i).getMessage());
+            FeedModel model = new FeedModel();
+            model.setDATE(list.get(i).getCreatedAt());
+            model.setFROM(list.get(i).getFrom());
+            model.setID(list.get(i).getId());
+            model.setMESSAGE(list.get(i).getMessage());
+            model.setSCREENNAME(list.get(i).getScreenName());
+
+            tmpList.add(model);
+        }
+        return tmpList;
+    }
+
     private void updateDatabase(SocialAccountEnum act){
         ContentProvider provider;
         List<FeedModel> list = new ArrayList<>();
@@ -188,7 +230,7 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
         switch (act){
             case INSTAGRAM:
 //                provider = mInstagramProvider;
-                list = mInstagramList;
+                list = feedListToModelList(getInstagramList());
                 uri = InstagramProvider.CONTENT_URI;
                 break;
             case FACEBOOK:

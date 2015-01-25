@@ -15,14 +15,20 @@ public class Constants {
     public static final class Extra {
 //        public static final String FRAGMENT_INDEX = "UNIVERSALIMAGELOADER.FRAGMENT_INDEX";
         public static final String IMAGE_POSITION = "UNIVERSALIMAGELOADER.IMAGE_POSITION";
+
+        public static enum FragmentSection {
+            ACTIVITY_SECTION_ALBUMS, ACTIVITY_SECTION_FACEBOOK, ACTIVITY_SECTION_INSTAGRAM,
+            ACTIVITY_SECTION_FLICKR, ACTIVITY_SECTION_WIFI
+        };
     }
 
     public static final class Intent{
         public static final String ACTIVITY_INTENT = "INTENT.ACTIVITY";
 
-        public static enum ActivityIntents {
-        ACTIVITY_INTENT_ALBUMS, ACTIVITY_INTENT_FACEBOOK,
-        ACTIVITY_INTENT_INSTAGRAM, ACTIVITY_INTENT_FLICKR, ACTIVITY_INTENT_WIFI
+        public static class ActivityIntents {
+            public static String ACTIVITY_INTENT_FACEBOOK = "ACTIVITY_SECTION_FACEBOOK";
+            public static String ACTIVITY_INTENT_INSTAGRAM = "ACTIVITY_SECTION_INSTAGRAM";
+            public static String ACTIVITY_INTENT_FLICKR = "ACTIVITY_SECTION_FLICKR";
         };
 
         public static final String EX_ACCOUNT = "ACCOUNT";
