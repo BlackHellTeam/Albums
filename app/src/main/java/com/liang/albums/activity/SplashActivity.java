@@ -108,30 +108,7 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
             startActivity(new Intent(this, SettingWifiActivity.class));
             finish();
         }
-//
-//        if(hasInsAccount){
-//            mAuthAdapter.authorize(this, SocialAuthAdapter.Provider.INSTAGRAM);
-//            //CounterAdd();
-//            synchronized (mLoginCounter){
-//                mLoginCounter++;
-//            }
-//        }
-//
-//        if(hasFBAccount){
-//            mAuthAdapter.authorize(this, SocialAuthAdapter.Provider.FACEBOOK);
-//            //CounterAdd();
-//            synchronized (mLoginCounter){
-//                mLoginCounter++;
-//            }
-//        }
-//
-//        if(hasFlickerAccount){
-//            mAuthAdapter.authorize(this, SocialAuthAdapter.Provider.FLICKR);
-//            //CounterAdd();
-//            synchronized (mLoginCounter){
-//                mLoginCounter++;
-//            }
-//        }
+
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }

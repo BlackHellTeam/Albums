@@ -51,8 +51,6 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
 
     private static final String TAG = "AlbumsShowFragment";
 
-    private SocialAuthAdapter authAdapter;
-    //private ViewPager mPager;
     private JazzyViewPager mPager;
     private List<Feed> feedList;
     private int mCurrentItem = 0;
@@ -66,8 +64,6 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        authAdapter = AlbumsApp.getInstance().getAuthInstagramAdapter();
 
         options = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.ic_empty)
@@ -89,7 +85,6 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
         getActivity().registerReceiver(mReceiver, intentFilter);
 
         feedList = AlbumsApp.getInstance().getContentService().getInstagramList();
-        //handler = new ImageShowHandle();
 
     }
 
@@ -122,8 +117,6 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
         super.onResume();
         if (AlbumsApp.getInstance().getPreferenceUtil()
                 .getPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false)){
-//            authAdapter.getFeedsAsync(new FeedDataListener());
-//            mDialog.show();
             feedList = AlbumsApp.getInstance().getContentService().getInstagramList();
         }
 
@@ -156,33 +149,6 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
         feedList = AlbumsApp.getInstance().getContentService().getInstagramList();
         mPager.setAdapter(new ImageAdapter());
         mPager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION, 0));
-    }
-
-    // To receive the feed response after authentication
-    private final class FeedDataListener implements SocialAuthListener<List<Feed>> {
-
-        @Override
-        public void onExecute(String provider, List<Feed> t) {
-
-            Log.d("Custom-UI", "Receiving Data");
-            mDialog.dismiss();
-            feedList = t;
-
-            if (feedList != null && feedList.size() > 0) {
-                mPager.setAdapter(new ImageAdapter());
-                mPager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION, 0));
-                Log.d("AlbumsShow", "Feed List size = "+feedList.size());
-                for(int i=0;i<feedList.size();++i){
-                    Log.d("AlbumsShow", "Feed List [" + i + "] = " +feedList.get(i).getMessage());
-                }
-            } else {
-                Log.d("AlbumsShow", "Feed List Empty");
-            }
-        }
-
-        @Override
-        public void onError(SocialAuthError e) {
-        }
     }
 
     private class ImageAdapter extends PagerAdapter {
@@ -290,4 +256,9 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
         }
     };
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(mReceiver);
+    }
 }

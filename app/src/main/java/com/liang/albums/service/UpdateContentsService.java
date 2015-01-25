@@ -257,4 +257,10 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
         }
 
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
 }

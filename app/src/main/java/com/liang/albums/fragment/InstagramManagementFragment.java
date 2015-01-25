@@ -118,4 +118,10 @@ public class InstagramManagementFragment extends PlaceholderFragment
     public void onContentListChanged(String account) {
 
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(mReceiver);
+    }
 }
