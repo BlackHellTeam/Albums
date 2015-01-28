@@ -75,7 +75,7 @@ public class JazzyViewPager extends ViewPager
         // now style everything!
         TypedArray ta = context.obtainStyledAttributes(attrs,
                 R.styleable.JazzyViewPager);
-        int effect = ta.getInt(R.styleable.JazzyViewPager_style, 0);
+        int effect = ta.getInt(R.styleable.JazzyViewPager_anim_style, 0);
         String[] transitions = getResources().getStringArray(
                 R.array.jazzy_effects);
         setTransitionEffect(TransitionEffect.valueOf(transitions[effect]));
