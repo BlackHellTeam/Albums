@@ -44,6 +44,8 @@ public class PlaceholderFragment extends Fragment {
                 fragment = new WifiSettingFragment();
                 break;
             case ACTIVITY_SECTION_FACEBOOK:
+                fragment = new FacebookManagementFragment();
+                break;
             case ACTIVITY_SECTION_FLICKR:
             default:
                 fragment = new PlaceholderFragment();
