@@ -12,6 +12,8 @@
     <string name="action_settings">Settings</string>
     <string name="app_id">882471038441002</string>
 
+    <string name="title_language">Choose language</string>
+
     <string-array name="jazzy_effects">
         <item>Standard</item>
         <item>Tablet</item>
