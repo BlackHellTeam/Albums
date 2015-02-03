@@ -9,9 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="178dp"
         android:text="@string/title_language"
-        android:textSize="32sp"/>
+        android:textSize="32sp"
+        android:textColor="@color/milk_white"/>
 
     <RadioGroup
         android:id="@+id/radiogroup_pager_language"
@@ -25,29 +26,35 @@
             android:id="@+id/radiobutton_eng_language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="English"/>
+            android:text="English"
+            android:textColor="@color/milk_white"
+            android:textSize="26sp"
+            android:button="@drawable/radiobutton_selector"/>
         <ImageView
-            android:layout_width="match_parent"
+            android:layout_width="600dp"
             android:layout_height="1dp"
-            android:background="@color/holo_blue"/>
+            android:layout_marginTop="18dp"
+            android:background="@color/milk_white"/>
         <RadioButton
             android:id="@+id/radiobutton_cn_language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chinese"/>
+            android:layout_marginTop="18dp"
+            android:text="中文"
+            android:textColor="@color/milk_white"
+            android:textSize="26sp"
+            android:button="@drawable/radiobutton_selector"/>
 
     </RadioGroup>
 
-    <TextView
-        android:id="@+id/text_pager_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/radiogroup_pager_language"
-        android:layout_marginTop="12dp"
+    <Button
+        android:id="@+id/btn_pager_next"
+        android:layout_width="44dp"
+        android:layout_height="12dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="242dp"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="32dp"
-        android:background="#00FFFFFF"
-        android:text="next"
-        android:textSize="24sp"/>
+        android:layout_marginRight="90dp"
+        android:background="@drawable/btn_next"/>
 
 </RelativeLayout>

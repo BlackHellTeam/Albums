@@ -1,8 +1,13 @@
 package com.liang.albums.activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -11,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -36,6 +43,11 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
     private ArrayAdapter<String> mTimeZoneAdapter;
     private Spinner mTimeZoneSpinner;
 
+    WifiManager mainWifiObj;
+    WifiScanReceiver wifiReciever;
+    ListView list;
+    String wifis[];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,13 +67,16 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
         View pageView2 = inflater.inflate(R.layout.page_item_wifi, null);
         View pageView3 = inflater.inflate(R.layout.page_item_datetime, null);
 
-        TextView tvNext = (TextView)pageView1.findViewById(R.id.text_pager_next);
-        tvNext.setOnClickListener(new View.OnClickListener() {
+        // language page
+        Button btnNext = (Button)pageView1.findViewById(R.id.btn_pager_next);
+        btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mViewPager.setCurrentItem(1);
             }
         });
+
+        //
 
         TextView tvDone = (TextView)pageView3.findViewById(R.id.text_pager_done);
         tvDone.setOnClickListener(new View.OnClickListener() {
@@ -129,5 +144,19 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    private class WifiScanReceiver extends BroadcastReceiver {
+        @SuppressLint("UseValueOf")
+        public void onReceive(Context c, Intent intent) {
+            List<ScanResult> wifiScanList = mainWifiObj.getScanResults();
+            wifis = new String[wifiScanList.size()];
+            for(int i = 0; i < wifiScanList.size(); i++){
+                wifis[i] = ((wifiScanList.get(i)).toString());
+            }
+
+            list.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
+                    android.R.layout.simple_list_item_1,wifis));
+        }
     }
 }

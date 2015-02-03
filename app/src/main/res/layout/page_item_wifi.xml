@@ -15,8 +15,7 @@
     <ListView
         android:id="@+id/listView_page_wifi"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_height="300dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/textview_page_title"
         android:drawSelectorOnTop="false"
