@@ -45,7 +45,15 @@ public class FacebookManagementFragment extends PlaceholderFragment
     private Session.StatusCallback callback = new Session.StatusCallback() {
         @Override
         public void call(Session session, SessionState state, Exception exception) {
-            onSessionStateChange(session, state, exception);
+            Log.d(TAG, "Session.StatusCallback "+state.toString());
+            if(state.isOpened()){
+                Intent intent = new Intent();
+                intent.setAction(Constants.Broadcasts.ACTION_LOGIN);
+                intent.putExtra(Constants.Intent.EX_ACCOUNT, Constants.SocialInfo.ACCOUNT_FACEBOOK);
+                intent.putExtra(Constants.Intent.EX_LOGIN_STATES,
+                        Constants.SocialInfo.LoginStates.EX_LOGIN_SUCCESS);
+                getActivity().sendBroadcast(intent);
+            }
         }
     };
     private FacebookDialog.Callback dialogCallback = new FacebookDialog.Callback() {
@@ -81,6 +89,7 @@ public class FacebookManagementFragment extends PlaceholderFragment
 
         btnLogin = (LoginButton)rootView.findViewById(R.id.btn_fbmgr_login);
         btnLogin.setFragment(this);
+        btnLogin.setReadPermissions();
         btnLogin.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
             @Override
             public void onUserInfoFetched(GraphUser user) {
@@ -137,10 +146,6 @@ public class FacebookManagementFragment extends PlaceholderFragment
     public void onDestroy() {
         super.onDestroy();
         getActivity().unregisterReceiver(mReceiver);
-    }
-
-    private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-        Log.d(TAG, "onSessionStateChange : "+state.toString());
     }
 
     @Override

@@ -58,9 +58,17 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
         filter.addAction(Constants.Broadcasts.ACTION_LOGIN);
         registerReceiver(mReceiver, filter);
 
-        mHandler = new Handler();
+        startActivity(new Intent(this, GuideActivity.class));
+        //mHandler = new Handler();
 
-        mHandler.post(rInitApp);
+        //mHandler.post(rInitApp);
+        mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                SplashActivity.this.finish();
+            }
+        }, 2000);
     }
 
     Runnable rInitApp = new Runnable() {
@@ -105,10 +113,11 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
                 .getPrefBoolean(Constants.PreferenceConstants.LOGIN_FLICKER, false);
 
         if( !hasFBAccount && !hasInsAccount && !hasFlickerAccount ){
-            startActivity(new Intent(this, SettingWifiActivity.class));
+            Log.d(TAG, "startActivity : GuideActivity");
+            startActivity(new Intent(this, GuideActivity.class));
             finish();
         }
-
+        Log.d(TAG, "startActivity : MainActivity");
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }

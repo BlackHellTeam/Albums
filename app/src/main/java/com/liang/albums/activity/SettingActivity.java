@@ -14,7 +14,7 @@ import com.liang.albums.util.Constants;
 /**
  * Created by liang on 15/1/7.
  */
-public class SettingWifiActivity extends FragmentActivity {
+public class SettingActivity extends FragmentActivity {
 
     private static final String TAG = "SettingWifiActivity";
 

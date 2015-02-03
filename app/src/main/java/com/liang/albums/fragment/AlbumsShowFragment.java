@@ -23,6 +23,7 @@ import com.liang.albums.R;
 import com.liang.albums.app.AlbumsApp;
 import com.liang.albums.interfaces.SocialEventsHandler;
 import com.liang.albums.receiver.SocialAccountsReceiver;
+import com.liang.albums.service.UpdateContentsService;
 import com.liang.albums.util.Constants;
 import com.liang.albums.view.JazzyViewPager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -146,7 +147,12 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
     @Override
     public void onContentListChanged(String account) {
         Log.d(TAG, "onContentListChanged");
-        feedList = AlbumsApp.getInstance().getContentService().getInstagramList();
+        UpdateContentsService svr = AlbumsApp.getInstance().getContentService();
+        feedList = svr.getInstagramList(); // + svr.getFacebookList();
+        List<Feed> tmp = svr.getFacebookList();
+        for(int i=0;i<tmp.size();++i){
+            feedList.add(tmp.get(i));
+        }
         mPager.setAdapter(new ImageAdapter());
         mPager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION, 0));
     }

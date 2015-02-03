@@ -1,5 +1,6 @@
 package com.liang.albums.app;
 
+import android.app.AlarmManager;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;

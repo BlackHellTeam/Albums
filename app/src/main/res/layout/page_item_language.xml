@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:checkedButton="@id/radiobutton_eng_language">
+        android:checkedButton="@+id/radiobutton_eng_language">
 
         <RadioButton
             android:id="@+id/radiobutton_eng_language"
@@ -39,6 +39,7 @@
     </RadioGroup>
 
     <TextView
+        android:id="@+id/text_pager_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/radiogroup_pager_language"
