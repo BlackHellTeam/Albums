@@ -9,19 +9,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="112dp"
         android:text="Wi-Fi"
+        android:textColor="@color/milk_white"
         android:textSize="32sp"/>
     <ListView
         android:id="@+id/listView_page_wifi"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_width="608dp"
+        android:layout_height="268dp"
         android:layout_centerHorizontal="true"
+        android:divider="@color/milk_white"
+        android:dividerHeight="1dp"
         android:layout_below="@id/textview_page_title"
+        android:layout_marginTop="72dp"
         android:drawSelectorOnTop="false"
-        android:background="@android:color/background_dark"
-        android:listSelector="@android:color/darker_gray" >
+        android:background="@drawable/bg_listview_white"
+        android:listSelector="@android:color/darker_gray" />
 
-    </ListView>
+    <Button
+        android:id="@+id/btn_pager_next"
+        android:layout_width="44dp"
+        android:layout_height="12dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="105dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="90dp"
+        android:background="@drawable/btn_next"/>
+
 
 </RelativeLayout>
