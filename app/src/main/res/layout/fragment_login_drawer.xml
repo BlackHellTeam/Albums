@@ -1,25 +1,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/milk_white">
+    android:background="@color/dark_blue">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="facebook"/>
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@drawable/icon_setting"/>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="167dp"
+            android:layout_height="167dp"
             android:layout_marginTop="32dp"
-            android:text="instagram"/>
+            android:background="@drawable/ball_facebook"/>
+
+        <Button
+            android:layout_width="167dp"
+            android:layout_height="167dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/ball_instagram"/>
 
     </LinearLayout>
 

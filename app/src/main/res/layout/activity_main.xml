@@ -23,7 +23,7 @@
          the container. -->
     <!--android:layout_width="@dimen/navigation_drawer_width" -->
     <fragment android:id="@+id/navigation_drawer"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:name="com.liang.albums.fragment.LoginDrawerFragment"

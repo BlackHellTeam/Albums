@@ -97,7 +97,7 @@ public class WifiListAdapter extends BaseAdapter {
     }
 
 
-    public final class ViewHolder{
+    private final class ViewHolder{
         public ImageView checked;
         public ImageView icon;
         public TextView info;

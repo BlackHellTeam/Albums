@@ -15,6 +15,7 @@
     <string name="progress_scanning">Scanning</string>
 
     <string name="title_language">Choose language</string>
+    <string name="title_datetime">Date &amp; Time</string>
 
     <string-array name="jazzy_effects">
         <item>Standard</item>

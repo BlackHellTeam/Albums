@@ -29,8 +29,12 @@ import android.widget.TextView;
 
 import com.liang.albums.R;
 import com.liang.albums.adapter.GuidePagerAdapter;
+import com.liang.albums.adapter.TimeSettingListAdapter;
 import com.liang.albums.adapter.WifiListAdapter;
 import com.liang.albums.util.AccessPoint;
+import com.liang.albums.view.DatePickerCusDialog;
+import com.liang.albums.view.TimePickerCusDialog;
+import com.liang.albums.view.TimeZoneDialog;
 import com.liang.albums.view.WifiPasswordDialog;
 
 import java.text.SimpleDateFormat;
@@ -67,6 +71,7 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
     private boolean mResetNetworks = false;
     private boolean mFilterNetwork = false;
     private WifiListAdapter mWifiListAdapter;
+    private TimeSettingListAdapter mTimeListAdapter;
 
     private WifiManager mWifiManager;
     private List<AccessPoint> mAccessPoints;
@@ -142,10 +147,10 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
         });
 
         // wifi page
-        ListView listView = (ListView) pageView2.findViewById(R.id.listView_page_wifi);
+        ListView wifiListView = (ListView) pageView2.findViewById(R.id.listView_page_wifi);
         mWifiListAdapter = new WifiListAdapter(this,mAccessPoints);
-        listView.setAdapter(mWifiListAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        wifiListView.setAdapter(mWifiListAdapter);
+        wifiListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AccessPoint point = (AccessPoint) mWifiListAdapter.getItem(position);
@@ -163,8 +168,8 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
 
 
         // time settings
-        TextView tvDone = (TextView)pageView3.findViewById(R.id.text_pager_done);
-        tvDone.setOnClickListener(new View.OnClickListener() {
+        Button btnDone = (Button)pageView3.findViewById(R.id.btn_pager_done);
+        btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(GuideActivity.this, MainActivity.class));
@@ -172,42 +177,27 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
             }
         });
 
-        mTimeZoneSpinner = (Spinner)pageView3.findViewById(R.id.spinner_pager_time);
-        mTimeZoneAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, TimeZone.getAvailableIDs());
-        mTimeZoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mTimeZoneSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            Calendar current = Calendar.getInstance();
-            SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss");
+        ListView timeListView = (ListView) pageView3.findViewById(R.id.listView_page_time);
+        mTimeListAdapter = new TimeSettingListAdapter(this);
+        timeListView.setAdapter(mTimeListAdapter);
+        timeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedId = (String) (parent
-                        .getItemAtPosition(position));
-                TimeZone timezone = TimeZone.getTimeZone(selectedId);
-                String TimeZoneName = timezone.getDisplayName();
-
-                int TimeZoneOffset = timezone.getRawOffset()
-                        / (60 * 1000);
-
-                int hrs = TimeZoneOffset / 60;
-                int mins = TimeZoneOffset % 60;
-                long miliSeconds = current.getTimeInMillis();
-                miliSeconds = miliSeconds + timezone.getRawOffset();
-
-                Date resultdate = new Date(miliSeconds);
-                Log.d(TAG, sdf.format(resultdate));
-
-                AlarmManager am = (AlarmManager)getApplication().getSystemService(Service.ALARM_SERVICE);
-                am.setTimeZone(timezone.getID());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 0){
+                    AlarmManager am = (AlarmManager)getApplication().getSystemService(Service.ALARM_SERVICE);
+                    TimeZoneDialog dialog = new TimeZoneDialog(GuideActivity.this, am);
+                    dialog.show();
+                }
+                if(position == 1){
+                    DatePickerCusDialog dialog = new DatePickerCusDialog();
+                    dialog.show(getSupportFragmentManager(), "DatePicker");
+                }
+                if(position == 2){
+                    TimePickerCusDialog dialog = new TimePickerCusDialog();
+                    dialog.show(getSupportFragmentManager(), "TimePicker");
+                }
             }
         });
-        mTimeZoneSpinner.setAdapter(mTimeZoneAdapter);
-
 
         list.add(pageView1);
         list.add(pageView2);
