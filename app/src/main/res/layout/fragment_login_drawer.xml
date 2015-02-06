@@ -12,21 +12,40 @@
         android:gravity="center_horizontal">
 
         <Button
+            android:id="@+id/btn_login_setting"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:background="@drawable/icon_setting"/>
 
         <Button
+            android:id="@+id/btn_login_facebook"
             android:layout_width="167dp"
             android:layout_height="167dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/ball_facebook"/>
+        <TextView
+            android:id="@+id/text_login_facebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="login"
+            android:textSize="18sp"
+            android:textColor="#6e7e8a"/>
 
         <Button
+            android:id="@+id/btn_login_instagram"
             android:layout_width="167dp"
             android:layout_height="167dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/ball_instagram"/>
+        <TextView
+            android:id="@+id/text_login_instagram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="login"
+            android:textSize="18sp"
+            android:textColor="#6e7e8a"/>
 
     </LinearLayout>
 

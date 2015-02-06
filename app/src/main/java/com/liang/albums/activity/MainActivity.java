@@ -65,6 +65,12 @@ public class MainActivity extends ActionBarActivity
             }
         }
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container_main, PlaceholderFragment.
+                        newInstance(this.castPositionToSection(0)))
+                .commit();
+
     }
 
     @Override

@@ -17,15 +17,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.liang.albums.R;
 import com.liang.albums.adapter.GuidePagerAdapter;
@@ -52,9 +48,6 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
 
     private ViewPager mViewPager;
     private List<View> mPageList;
-
-    private ArrayAdapter<String> mTimeZoneAdapter;
-    private Spinner mTimeZoneSpinner;
 
 
     // for wifi settings
