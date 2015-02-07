@@ -28,7 +28,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.Session;
+import com.facebook.SessionState;
 import com.liang.albums.R;
+import com.liang.albums.activity.SettingActivity;
 import com.liang.albums.app.AlbumsApp;
 import com.liang.albums.interfaces.SocialEventsHandler;
 import com.liang.albums.receiver.SocialAccountsReceiver;
@@ -106,6 +109,14 @@ public class LoginDrawerFragment extends Fragment implements SocialEventsHandler
                         Log.d(TAG, "authAdapter.authorize failed : " + e.getMessage());
                     }
                 }
+            }
+        });
+
+
+        mBtnFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), SettingActivity.class));
             }
         });
 
@@ -239,4 +250,21 @@ public class LoginDrawerFragment extends Fragment implements SocialEventsHandler
     public void onContentListChanged(String account) {
 
     }
+
+    // facebook auth adapter
+    // call back
+    private Session.StatusCallback callback = new Session.StatusCallback() {
+        @Override
+        public void call(Session session, SessionState state, Exception exception) {
+            Log.d(TAG, "Session.StatusCallback "+state.toString());
+            if(state.isOpened()){
+                Intent intent = new Intent();
+                intent.setAction(Constants.Broadcasts.ACTION_LOGIN);
+                intent.putExtra(Constants.Intent.EX_ACCOUNT, Constants.SocialInfo.ACCOUNT_FACEBOOK);
+                intent.putExtra(Constants.Intent.EX_LOGIN_STATES,
+                        Constants.SocialInfo.LoginStates.EX_LOGIN_SUCCESS);
+                getActivity().sendBroadcast(intent);
+            }
+        }
+    };
 }

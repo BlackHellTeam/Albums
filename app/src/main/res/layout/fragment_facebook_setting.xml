@@ -1,0 +1,92 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity$PlaceholderFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:background="#4c6cc7">
+
+        <ImageButton
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="12dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/arrow_left"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="Facebook"
+            android:textSize="24sp"
+            android:textColor="@color/milk_white"/>
+
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="172dp"
+        android:background="#3e464d">
+        <ImageView
+            android:id="@+id/img_facebook_head"
+            android:layout_width="73dp"
+            android:layout_height="73dp"
+            android:layout_marginTop="32dp"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/text_facebook_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_facebook_head"
+            android:layout_marginTop="12dp"
+            android:layout_centerHorizontal="true"
+            android:text="Alizee"
+            android:textColor="@color/milk_white"
+            android:textSize="18dp"/>
+
+        <com.facebook.widget.LoginButton
+            android:id="@+id/btn_facebook_login"
+            android:layout_width="84dp"
+            android:layout_height="22dp"
+            android:layout_alignParentRight="true"
+            facebook:confirm_logout="true"
+            facebook:fetch_user_info="true"
+            />
+
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/list_facebook_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#464f58"/>
+
+
+    <!-- <com.facebook.widget.LoginButton
+        android:id="@+id/btn_fbmgr_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        facebook:confirm_logout="false"
+        facebook:fetch_user_info="true"
+        />
+
+    <TextView
+        android:id="@+id/text_fbmgr_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/btn_fbmgr_login"
+        android:text="facebook never logined in."/> -->
+
+</LinearLayout>

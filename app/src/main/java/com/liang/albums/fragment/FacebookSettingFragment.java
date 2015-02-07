@@ -1,6 +1,5 @@
 package com.liang.albums.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -8,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.support.v4.app.Fragment;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -16,17 +16,14 @@ import com.facebook.model.GraphUser;
 import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.LoginButton;
 import com.liang.albums.R;
-import com.liang.albums.activity.MainActivity;
 import com.liang.albums.interfaces.SocialEventsHandler;
 import com.liang.albums.receiver.SocialAccountsReceiver;
 import com.liang.albums.util.Constants;
 
-import org.brickred.socialauth.android.SocialAuthAdapter;
-
 /**
  * Created by liang on 15/1/3.
  */
-public class FacebookManagementFragment extends PlaceholderFragment
+public class FacebookSettingFragment extends Fragment
         implements SocialEventsHandler {
     private static final String TAG = "FacebookManagementFragment";
 
@@ -80,16 +77,16 @@ public class FacebookManagementFragment extends PlaceholderFragment
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_facebook, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_facebook_setting, container, false);
 
-        btnLogin = (LoginButton)rootView.findViewById(R.id.btn_fbmgr_login);
+        btnLogin = (LoginButton)rootView.findViewById(R.id.btn_facebook_login);
         btnLogin.setFragment(this);
         btnLogin.setReadPermissions();
         btnLogin.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
             @Override
             public void onUserInfoFetched(GraphUser user) {
                 //Log.d(TAG, "UserInfoChangedCallback : "+user.getUsername());
-                FacebookManagementFragment.this.user = user;
+                FacebookSettingFragment.this.user = user;
                 Session session = Session.getActiveSession();
             }
         });
@@ -113,13 +110,6 @@ public class FacebookManagementFragment extends PlaceholderFragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         uiHelper.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(
-                (Constants.Extra.FragmentSection)getArguments().getSerializable(ARG_SECTION_NUMBER));
     }
 
     @Override
