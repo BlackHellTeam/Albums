@@ -116,11 +116,11 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
     @Override
     public void onResume() {
         super.onResume();
-        if (AlbumsApp.getInstance().getPreferenceUtil()
-                .getPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false)){
-            feedList = AlbumsApp.getInstance().getContentService().getInstagramList();
-        }
-
+//        if (AlbumsApp.getInstance().getPreferenceUtil()
+//                .getPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false)){
+//            feedList = AlbumsApp.getInstance().getContentService().getInstagramList();
+//        }
+        refreshContent();
     }
 
     private void setupJazziness(JazzyViewPager.TransitionEffect effect)
@@ -147,14 +147,7 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
     @Override
     public void onContentListChanged(String account) {
         Log.d(TAG, "onContentListChanged");
-        UpdateContentsService svr = AlbumsApp.getInstance().getContentService();
-        feedList = svr.getInstagramList(); // + svr.getFacebookList();
-        List<Feed> tmp = svr.getFacebookList();
-        for(int i=0;i<tmp.size();++i){
-            feedList.add(tmp.get(i));
-        }
-        mPager.setAdapter(new ImageAdapter());
-        mPager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION, 0));
+        refreshContent();
     }
 
     private class ImageAdapter extends PagerAdapter {
@@ -266,5 +259,19 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
     public void onDestroy() {
         super.onDestroy();
         getActivity().unregisterReceiver(mReceiver);
+    }
+
+    private void refreshContent(){
+        UpdateContentsService svr = AlbumsApp.getInstance().getContentService();
+        synchronized (feedList){
+            feedList.clear();
+            feedList = svr.getInstagramList(); // + svr.getFacebookList();
+            List<Feed> tmp = svr.getFacebookList();
+            for(int i=0;i<tmp.size();++i){
+                feedList.add(tmp.get(i));
+            }
+        }
+        mPager.setAdapter(new ImageAdapter());
+        mPager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION, 0));
     }
 }

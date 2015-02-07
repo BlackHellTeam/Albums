@@ -51,12 +51,9 @@ public class FacebookSettingFragment extends Fragment
         public void call(Session session, SessionState state, Exception exception) {
             Log.d(TAG, "Session.StatusCallback "+state.toString());
             if(state.isOpened()){
-                Intent intent = new Intent();
-                intent.setAction(Constants.Broadcasts.ACTION_LOGIN);
-                intent.putExtra(Constants.Intent.EX_ACCOUNT, Constants.SocialInfo.ACCOUNT_FACEBOOK);
-                intent.putExtra(Constants.Intent.EX_LOGIN_STATES,
-                        Constants.SocialInfo.LoginStates.EX_LOGIN_SUCCESS);
-                getActivity().sendBroadcast(intent);
+                sendBroadcast(Constants.Broadcasts.ACTION_LOGIN);
+            }else {
+                sendBroadcast(Constants.Broadcasts.ACTION_LOGOUT);
             }
         }
     };
@@ -120,12 +117,6 @@ public class FacebookSettingFragment extends Fragment
             }
         });
 
-        if(this.user!=null){
-            textName.setText( user.getName() );
-            String uri = "https://graph.facebook.com/"+user.getUsername()+"/picture";
-            ImageLoader.getInstance().displayImage(uri, imageHead);
-        }
-
         return rootView;
     }
 
@@ -149,12 +140,17 @@ public class FacebookSettingFragment extends Fragment
 
     @Override
     public void onSignIn(String account, Constants.SocialInfo.LoginStates state) {
-
+        if(this.user!=null){
+            textName.setText( user.getName() );
+            String uri = "https://graph.facebook.com/"+user.getId()+"/picture";
+            ImageLoader.getInstance().displayImage(uri, imageHead);
+        }
     }
 
     @Override
     public void onSignOut(String account) {
-
+        textName.setText( "User Name" );
+        imageHead.setImageBitmap(null);
     }
 
     @Override
@@ -172,5 +168,14 @@ public class FacebookSettingFragment extends Fragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         uiHelper.onActivityResult(requestCode, resultCode, data, dialogCallback);
+    }
+
+    private void sendBroadcast(String action){
+        Intent intent = new Intent();
+        intent.setAction(action);//
+        intent.putExtra(Constants.Intent.EX_ACCOUNT, Constants.SocialInfo.ACCOUNT_FACEBOOK);
+        intent.putExtra(Constants.Intent.EX_LOGIN_STATES,
+                Constants.SocialInfo.LoginStates.EX_LOGIN_SUCCESS);
+        getActivity().sendBroadcast(intent);
     }
 }

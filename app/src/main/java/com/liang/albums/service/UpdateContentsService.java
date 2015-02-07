@@ -190,11 +190,11 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
 
                                             String albumId = dataObject.getString("id");
                                             Log.d(TAG, "Album id = "+albumId);
-                                            if(i == dataArray.length()-1) {
-                                                getPhotos(albumId, true);
-                                            }else{
-                                                getPhotos(albumId, false);
-                                            }
+                                            //if(i == dataArray.length()-1) {
+                                            getPhotos(albumId, true);
+                                            //}else{
+                                            //    getPhotos(albumId, false);
+                                            //}
                                         }
                                     }
                                 }catch (Exception e){
