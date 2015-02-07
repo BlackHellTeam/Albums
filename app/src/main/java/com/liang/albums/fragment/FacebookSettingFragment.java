@@ -2,12 +2,16 @@ package com.liang.albums.fragment;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -19,6 +23,10 @@ import com.liang.albums.R;
 import com.liang.albums.interfaces.SocialEventsHandler;
 import com.liang.albums.receiver.SocialAccountsReceiver;
 import com.liang.albums.util.Constants;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 /**
  * Created by liang on 15/1/3.
@@ -28,7 +36,11 @@ public class FacebookSettingFragment extends Fragment
     private static final String TAG = "FacebookManagementFragment";
 
     private LoginButton btnLogin;
+    private ImageButton btnBack;
+    private TextView textName;
+    private ImageView imageHead;
     private GraphUser user;
+    private Session mSession;
 
     private SocialAccountsReceiver mReceiver;
 
@@ -79,17 +91,40 @@ public class FacebookSettingFragment extends Fragment
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_facebook_setting, container, false);
 
+        textName = (TextView) rootView.findViewById(R.id.text_facebook_name);
+        imageHead = (ImageView) rootView.findViewById(R.id.img_facebook_head);
+
         btnLogin = (LoginButton)rootView.findViewById(R.id.btn_facebook_login);
         btnLogin.setFragment(this);
-        btnLogin.setReadPermissions();
+        btnLogin.setReadPermissions("");
         btnLogin.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
             @Override
             public void onUserInfoFetched(GraphUser user) {
                 //Log.d(TAG, "UserInfoChangedCallback : "+user.getUsername());
                 FacebookSettingFragment.this.user = user;
-                Session session = Session.getActiveSession();
+                mSession = Session.getActiveSession();
+                if(user!=null){
+                    textName.setText( user.getName() );
+                    String uri = "https://graph.facebook.com/"+user.getId()+"/picture";
+                    ImageLoader.getInstance().displayImage(uri, imageHead);
+                }
             }
         });
+
+        btnBack = (ImageButton) rootView.findViewById(R.id.imgbtn_facebook_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "btnBack pressed");
+                getActivity().finish();
+            }
+        });
+
+        if(this.user!=null){
+            textName.setText( user.getName() );
+            String uri = "https://graph.facebook.com/"+user.getUsername()+"/picture";
+            ImageLoader.getInstance().displayImage(uri, imageHead);
+        }
 
         return rootView;
     }

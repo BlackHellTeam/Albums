@@ -128,6 +128,14 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
 
     @Override
     public void onSignOut(String account) {
+        if(account.equals(Constants.SocialInfo.ACCOUNT_INSTAGRAM)){
+            mInstagramList.clear();
+            notifyUpdate(SocialAccountEnum.INSTAGRAM);
+        }
+        if(account.equals(Constants.SocialInfo.ACCOUNT_FACEBOOK)){
+            mFacebookList.clear();
+            notifyUpdate(SocialAccountEnum.FACEBOOK);
+        }
 
     }
 

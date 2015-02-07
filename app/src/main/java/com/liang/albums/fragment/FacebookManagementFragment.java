@@ -84,7 +84,7 @@ public class FacebookManagementFragment extends PlaceholderFragment
 
         btnLogin = (LoginButton)rootView.findViewById(R.id.btn_fbmgr_login);
         btnLogin.setFragment(this);
-        btnLogin.setReadPermissions();
+        btnLogin.setReadPermissions("user_photos");
         btnLogin.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
             @Override
             public void onUserInfoFetched(GraphUser user) {
