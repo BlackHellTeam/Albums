@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:layout_alignLeft="@id/img_facebook_item_icon"
+        android:layout_toRightOf="@id/img_facebook_item_icon"
         android:layout_marginLeft="24dp"
         android:textSize="24sp"
         android:textColor="@color/milk_white"
@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        android:src="@drawable/arrow_right"/>
 
 </RelativeLayout>

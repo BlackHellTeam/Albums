@@ -17,6 +17,7 @@ import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphObject;
+import com.facebook.model.GraphUser;
 import com.liang.albums.app.AlbumsApp;
 import com.liang.albums.db.InstagramProvider;
 import com.liang.albums.db.SocialColums;
@@ -173,38 +174,44 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
         public void run() {
             session = Session.getActiveSession();
             if(session.isOpened()){
-                new Request(
-                        session,
-                        "/me/albums",
-                        null,
-                        HttpMethod.GET,
-                        new Request.Callback() {
-                            public void onCompleted(Response response) {
-                                try {
-                                    GraphObject object = response.getGraphObject();
-                                    Log.d(TAG, object.getInnerJSONObject().toString());
-                                    if(object != null){
-                                        JSONArray dataArray = new JSONArray(object.getProperty("data").toString());
-                                        for(int i=0;i<dataArray.length();i++){
-                                            JSONObject dataObject = (JSONObject)dataArray.get(i);
+                List<GraphUser> friendList = AlbumsApp.getInstance().getSelectedUsers();
+                mFacebookList.clear();
+                for(int i=0; i<friendList.size(); ++i) {
+                    String uri = "/" + friendList.get(i).getId() + "/albums";
+                    new Request(
+                            session,
+                            uri,
+                            null,
+                            HttpMethod.GET,
+                            new Request.Callback() {
+                                public void onCompleted(Response response) {
+                                    try {
+                                        GraphObject object = response.getGraphObject();
+                                        Log.d(TAG, object.getInnerJSONObject().toString());
+                                        if (object != null) {
+                                            JSONArray dataArray = new JSONArray(object.getProperty("data").toString());
+                                            for (int i = 0; i < dataArray.length(); i++) {
+                                                JSONObject dataObject = (JSONObject) dataArray.get(i);
 
-                                            String albumId = dataObject.getString("id");
-                                            Log.d(TAG, "Album id = "+albumId);
-                                            //if(i == dataArray.length()-1) {
-                                            getPhotos(albumId, true);
-                                            //}else{
-                                            //    getPhotos(albumId, false);
-                                            //}
+                                                String albumId = dataObject.getString("id");
+                                                Log.d(TAG, "Album id = " + albumId);
+                                                //if(i == dataArray.length()-1) {
+                                                getPhotos(albumId, true);
+                                                //}else{
+                                                //    getPhotos(albumId, false);
+                                                //}
+                                            }
                                         }
+                                    } catch (Exception e) {
+
                                     }
-                                }catch (Exception e){
 
                                 }
-
                             }
-                        }
-                ).executeAsync();
+                    ).executeAsync();
+                }
             }
+            mMainHandler.postDelayed(this, 1000 * 60);
         }
 
         private void getPhotos(final String albumId, final boolean sdb){

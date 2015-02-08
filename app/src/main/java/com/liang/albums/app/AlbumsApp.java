@@ -9,6 +9,8 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.facebook.model.GraphPlace;
+import com.facebook.model.GraphUser;
 import com.liang.albums.service.UpdateContentsService;
 import com.liang.albums.util.Constants;
 import com.liang.albums.util.PreferenceUtil;
@@ -21,6 +23,9 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import org.brickred.socialauth.android.SocialAuthAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by liang on 15/1/3.
  */
@@ -31,6 +36,7 @@ public class AlbumsApp extends Application{
 
     private SocialAuthAdapter mAuthInstagramAdapter;
     private PreferenceUtil preferenceUtil;
+    private List<GraphUser> selectedUsers;
     private WifiUtil wifiUtil;
     private UpdateContentsService mContentService; // 后续对service的轮询时间进行设置
     private ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -91,10 +97,22 @@ public class AlbumsApp extends Application{
         return wifiUtil;
     }
 
+    public List<GraphUser> getSelectedUsers() {
+        return selectedUsers;
+    }
+
+    public void setSelectedUsers(List<GraphUser> users) {
+        for(GraphUser u:users){
+            Log.d(TAG, "user id: "+u.getId());
+        }
+        selectedUsers = users;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         mApplication = this;
+        selectedUsers = new ArrayList<>();
         wifiUtil = new WifiUtil(this);
         SocialAuthAdapter.Provider.INSTAGRAM.setCallBackUri("http://test.com");
         mAuthInstagramAdapter = initAuthAdapter(this);
