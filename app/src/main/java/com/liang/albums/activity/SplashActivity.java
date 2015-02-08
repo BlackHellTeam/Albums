@@ -58,7 +58,6 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
         filter.addAction(Constants.Broadcasts.ACTION_LOGIN);
         registerReceiver(mReceiver, filter);
 
-        startActivity(new Intent(this, GuideActivity.class));
         //mHandler = new Handler();
 
         //mHandler.post(rInitApp);
@@ -66,6 +65,7 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 SplashActivity.this.finish();
             }
         }, 2000);

@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.liang.albums.R;
+import com.liang.albums.activity.GuideActivity;
 import com.liang.albums.activity.SettingActivity;
 import com.liang.albums.app.AlbumsApp;
 import com.liang.albums.interfaces.SocialEventsHandler;
@@ -83,6 +84,13 @@ public class LoginDrawerFragment extends Fragment implements SocialEventsHandler
         mBtnInstagram = (Button) loginView.findViewById(R.id.btn_login_instagram);
         mTextViewFacebook = (TextView) loginView.findViewById(R.id.text_login_facebook);
         mTextViewInstagram = (TextView) loginView.findViewById(R.id.text_login_instagram);
+
+        mBtnSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), GuideActivity.class));
+            }
+        });
 
         mBtnInstagram.setOnClickListener(new View.OnClickListener() {
             @Override

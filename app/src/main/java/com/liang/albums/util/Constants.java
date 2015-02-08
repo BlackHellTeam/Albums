@@ -10,6 +10,8 @@ public class Constants {
         public static final String LOGIN_INSTAGRAM = "INSTAGRAM.PREFERENCE.LOGIN";
         public static final String LOGIN_FACEBOOK = "FACEBOOK.PREFERENCE.LOGIN";
         public static final String LOGIN_FLICKER = "FLICKER.PREFERENCE.LOGIN";
+        // system settings
+        public static final String FIRST_USE_FLAG = "FIRST.FLAG.SETTINGS";
     }
 
     public static final class Extra {

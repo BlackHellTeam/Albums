@@ -1,5 +1,6 @@
 package com.liang.albums.activity;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentManager;
@@ -70,6 +71,11 @@ public class MainActivity extends ActionBarActivity
                 .replace(R.id.container_main, PlaceholderFragment.
                         newInstance(this.castPositionToSection(0)))
                 .commit();
+
+        if(AlbumsApp.getInstance().getPreferenceUtil()
+                .getPrefBoolean(Constants.PreferenceConstants.FIRST_USE_FLAG, true)){
+            startActivity(new Intent(this, GuideActivity.class));
+        }
 
     }
 

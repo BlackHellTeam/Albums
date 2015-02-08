@@ -27,7 +27,9 @@ import com.liang.albums.R;
 import com.liang.albums.adapter.GuidePagerAdapter;
 import com.liang.albums.adapter.TimeSettingListAdapter;
 import com.liang.albums.adapter.WifiListAdapter;
+import com.liang.albums.app.AlbumsApp;
 import com.liang.albums.util.AccessPoint;
+import com.liang.albums.util.Constants;
 import com.liang.albums.view.DatePickerCusDialog;
 import com.liang.albums.view.TimePickerCusDialog;
 import com.liang.albums.view.TimeZoneDialog;
@@ -166,6 +168,8 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(GuideActivity.this, MainActivity.class));
+                AlbumsApp.getInstance().getPreferenceUtil()
+                        .setPrefBoolean(Constants.PreferenceConstants.FIRST_USE_FLAG, false);
                 GuideActivity.this.finish();
             }
         });
