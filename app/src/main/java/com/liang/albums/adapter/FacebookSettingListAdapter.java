@@ -34,8 +34,8 @@ public class FacebookSettingListAdapter extends BaseAdapter {
         mSelectItem = 0;
         mContext = context;
 
-        mContents.add(new ItemContent(R.drawable.icon_friends,
-                R.string.menu_facebook_people));
+//        mContents.add(new ItemContent(R.drawable.icon_friends,
+//                R.string.menu_facebook_people));
     }
 
     @Override
