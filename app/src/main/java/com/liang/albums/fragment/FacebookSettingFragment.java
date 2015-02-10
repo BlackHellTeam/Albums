@@ -121,7 +121,7 @@ public class FacebookSettingFragment extends Fragment
         });
 
         List<String> permissions = new ArrayList<>();
-        permissions.add("user_friends");
+        //permissions.add("user_friends");
         permissions.add("user_photos");
         btnLogin = (LoginButton)rootView.findViewById(R.id.btn_facebook_login);
         btnLogin.setFragment(this);
@@ -196,17 +196,18 @@ public class FacebookSettingFragment extends Fragment
     public void onDestroy() {
         super.onDestroy();
         getActivity().unregisterReceiver(mReceiver);
+        uiHelper.onDestroy();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 64206) {
-            uiHelper.onActivityResult(requestCode, resultCode, data, dialogCallback);
-        }
+
         if(requestCode == REQUEST_CODE_FRIENDS && resultCode == Activity.RESULT_OK){
             mApp.getSelectedUsers().add(user);
+            return;
         }
+        uiHelper.onActivityResult(requestCode, resultCode, data, dialogCallback);
     }
 
     private void sendBroadcast(String action){

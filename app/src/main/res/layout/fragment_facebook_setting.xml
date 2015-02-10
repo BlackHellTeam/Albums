@@ -35,7 +35,7 @@
     
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="172dp"
+        android:layout_height="240dp"
         android:background="#3e464d">
         <ImageView
             android:id="@+id/img_facebook_head"
@@ -58,9 +58,11 @@
 
         <com.facebook.widget.LoginButton
             android:id="@+id/btn_facebook_login"
-            android:layout_width="84dp"
-            android:layout_height="22dp"
-            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_facebook_name"
+            android:layout_marginTop="12dp"
+            android:layout_centerHorizontal="true"
             facebook:confirm_logout="true"
             facebook:fetch_user_info="true"
             />
