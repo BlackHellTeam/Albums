@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -39,7 +40,7 @@ import java.util.List;
  */
 public class FacebookSettingFragment extends Fragment
         implements SocialEventsHandler {
-    private static final String TAG = "FacebookManagementFragment";
+    private static final String TAG = "FacebookSettingFragment";
 
     private static final int REQUEST_CODE_FRIENDS = 2626;
 
@@ -61,10 +62,15 @@ public class FacebookSettingFragment extends Fragment
         @Override
         public void call(Session session, SessionState state, Exception exception) {
             Log.d(TAG, "Session.StatusCallback "+state.toString());
-            if(state.isOpened()){
+            if(state.equals(SessionState.OPENED)){
                 sendBroadcast(Constants.Broadcasts.ACTION_LOGIN);
-            }else {
+            }else if(state.equals(SessionState.CLOSED)) {
                 sendBroadcast(Constants.Broadcasts.ACTION_LOGOUT);
+            }else if(state.equals(SessionState.CLOSED_LOGIN_FAILED)) {
+                // login failed
+                Toast.makeText(getActivity(), "Login failed! Please check your network!", Toast.LENGTH_SHORT).show();
+            }else if(state.equals(SessionState.OPENING)){
+                Toast.makeText(getActivity(), "Trying to login!", Toast.LENGTH_SHORT).show();
             }
         }
     };
