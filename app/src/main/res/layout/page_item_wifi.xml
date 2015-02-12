@@ -26,15 +26,16 @@
         android:background="@drawable/bg_listview_white"
         android:listSelector="@android:color/darker_gray" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_pager_next"
-        android:layout_width="44dp"
-        android:layout_height="12dp"
+        android:layout_width="66dp"
+        android:layout_height="24dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="105dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="90dp"
-        android:background="@drawable/btn_next"/>
+        android:scaleType="center"
+        android:src="@drawable/btn_next"/>
 
 
 </RelativeLayout>

@@ -32,14 +32,15 @@
         android:background="@android:color/transparent"
         android:listSelector="@android:color/darker_gray" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_pager_done"
         android:layout_width="51dp"
-        android:layout_height="13dp"
+        android:layout_height="26dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="236dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="100dp"
-        android:background="@drawable/btn_done"/>
+        android:scaleType="center"
+        android:src="@drawable/btn_done"/>
 
 </RelativeLayout>

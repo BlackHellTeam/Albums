@@ -127,7 +127,6 @@ public class FacebookSettingFragment extends Fragment
         });
 
         List<String> permissions = new ArrayList<>();
-        //permissions.add("user_friends");
         permissions.add("user_photos");
         btnLogin = (LoginButton)rootView.findViewById(R.id.btn_facebook_login);
         btnLogin.setFragment(this);

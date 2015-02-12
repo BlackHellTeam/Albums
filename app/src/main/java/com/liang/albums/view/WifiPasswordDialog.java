@@ -50,7 +50,7 @@ public class WifiPasswordDialog extends AbstractDialog {
         mBtnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WifiPasswordDialog.this.dismiss();
+                WifiPasswordDialog.this.cancel();
             }
         });
 

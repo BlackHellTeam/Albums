@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.liang.albums.R;
@@ -57,8 +58,6 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
     private final BroadcastReceiver mReceiver;
     private AccessPoint mSelectedAccessPoint;
     private static final int INVALID_NETWORK_ID = -1;
-    private static final String EXTRA_HUB_NAME = "user_name";
-    private static final String EXTRA_HUB_PASSWORD = "user_password";
     private Scanner mScanner;
     private NetworkInfo.DetailedState mLastState;
     private WifiInfo mLastInfo;
@@ -133,7 +132,7 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
         View pageView3 = inflater.inflate(R.layout.page_item_datetime, null);
 
         // language page
-        Button btnNext = (Button)pageView1.findViewById(R.id.btn_pager_next);
+        ImageButton btnNext = (ImageButton)pageView1.findViewById(R.id.btn_pager_next);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,7 +152,7 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
                 dialog.show();
             }
         });
-        Button btnGoAhead = (Button)pageView2.findViewById(R.id.btn_pager_next);
+        ImageButton btnGoAhead = (ImageButton)pageView2.findViewById(R.id.btn_pager_next);
         btnGoAhead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,11 +162,11 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
 
 
         // time settings
-        Button btnDone = (Button)pageView3.findViewById(R.id.btn_pager_done);
+        ImageButton btnDone = (ImageButton)pageView3.findViewById(R.id.btn_pager_done);
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(GuideActivity.this, MainActivity.class));
+//                startActivity(new Intent(GuideActivity.this, MainActivity.class));
                 AlbumsApp.getInstance().getPreferenceUtil()
                         .setPrefBoolean(Constants.PreferenceConstants.FIRST_USE_FLAG, false);
                 GuideActivity.this.finish();

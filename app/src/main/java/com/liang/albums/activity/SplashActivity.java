@@ -34,7 +34,7 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
     private final String TAG = "SplashActivity";
 
     private List<WifiConfiguration> mWifiCfgs;
-    private ScanResult mScanResult;
+//    private ScanResult mScanResult;
     private List<ScanResult> mListResult;
     private WifiUtil mWifiUtil;
     private SocialAuthAdapter mAuthAdapter;
@@ -84,7 +84,7 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
 
             connectKnownWifi();
 
-            connectSocialAccounts();
+//            connectSocialAccounts();
         }
     };
 
