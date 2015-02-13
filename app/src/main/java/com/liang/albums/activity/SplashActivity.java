@@ -59,6 +59,9 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
         registerReceiver(mReceiver, filter);
 
         //mHandler = new Handler();
+        if(!mWifiUtil.getWifiManager().isWifiEnabled()){
+            mWifiUtil.getWifiManager().setWifiEnabled(true);
+        }
 
         //mHandler.post(rInitApp);
         mHandler = new Handler();

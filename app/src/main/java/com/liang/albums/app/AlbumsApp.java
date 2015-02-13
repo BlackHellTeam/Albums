@@ -114,7 +114,7 @@ public class AlbumsApp extends Application{
         mApplication = this;
         selectedUsers = new ArrayList<>();
         wifiUtil = new WifiUtil(this);
-        SocialAuthAdapter.Provider.INSTAGRAM.setCallBackUri("http://test.com");
+        SocialAuthAdapter.Provider.INSTAGRAM.setCallBackUri("http://www.BambooAlbum.com");
         mAuthInstagramAdapter = initAuthAdapter(this);
         initImageLoader(getApplicationContext());
 

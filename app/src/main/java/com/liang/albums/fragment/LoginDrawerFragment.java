@@ -239,6 +239,7 @@ public class LoginDrawerFragment extends Fragment implements SocialEventsHandler
     @Override
     public void onSignIn(String account, Constants.SocialInfo.LoginStates state) {
         if(state != Constants.SocialInfo.LoginStates.EX_LOGIN_SUCCESS) {
+            Toast.makeText(getActivity(), "Login failed!", Toast.LENGTH_SHORT ).show();
             return;
         }
 

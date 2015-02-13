@@ -167,6 +167,13 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
         }
     };
 
+    private Runnable rNotifyFacebookUpdate = new Runnable() {
+        @Override
+        public void run() {
+            notifyUpdate(SocialAccountEnum.FACEBOOK);
+        }
+    };
+
     private Runnable rUpdateFBList = new Runnable() {
         //private ArrayList<String> mAlbumIds = new ArrayList<>();
         private Session session;
@@ -193,7 +200,11 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
 
                                             String albumId = dataObject.getString("id");
                                             Log.d(TAG, "Album id = " + albumId);
-                                            getPhotos(albumId, true);
+                                            if(i == dataArray.length()-1) {
+                                                getPhotos(albumId, true);
+                                            }else{
+                                                getPhotos(albumId, false);
+                                            }
                                         }
                                     }
                                 } catch (Exception e) {
@@ -234,7 +245,7 @@ public class UpdateContentsService extends Service implements SocialEventsHandle
                                             mFacebookList.add(feed);
                                         }
                                         if(sdb){
-                                            notifyUpdate(SocialAccountEnum.FACEBOOK);
+                                            mMainHandler.postDelayed(rNotifyFacebookUpdate, 3000);
                                         }
                                     }
 

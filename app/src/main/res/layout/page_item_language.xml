@@ -52,12 +52,13 @@
     <ImageButton
         android:id="@+id/btn_pager_next"
         android:layout_width="66dp"
-        android:layout_height="24dp"
+        android:layout_height="44dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="242dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="90dp"
         android:scaleType="center"
-        android:src="@drawable/btn_next"/>
+        android:src="@drawable/btn_next"
+        android:background="@android:color/transparent"/>
 
 </RelativeLayout>

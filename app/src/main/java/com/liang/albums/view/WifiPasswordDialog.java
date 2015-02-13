@@ -5,9 +5,11 @@ import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.liang.albums.R;
 import com.liang.albums.util.AccessPoint;
@@ -20,8 +22,8 @@ import java.util.List;
 public class WifiPasswordDialog extends AbstractDialog {
 
     private View mView;
-    private Button mBtnCancel;
-    private Button mBtnDone;
+    private ImageButton mBtnCancel;
+    private ImageButton mBtnDone;
     private EditText mEditPassword;
     private AccessPoint mAccessPoint;
     private int mSecurity;
@@ -46,7 +48,7 @@ public class WifiPasswordDialog extends AbstractDialog {
 
         mEditPassword = (EditText) findViewById(R.id.edit_wifi_password);
 
-        mBtnCancel = (Button) findViewById(R.id.btn_close);
+        mBtnCancel = (ImageButton) findViewById(R.id.btn_close);
         mBtnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,10 +56,11 @@ public class WifiPasswordDialog extends AbstractDialog {
             }
         });
 
-        mBtnDone = (Button) findViewById(R.id.btn_done);
+        mBtnDone = (ImageButton) findViewById(R.id.btn_done);
         mBtnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("WifiPasswordDialog", "button done");
                 WifiConfiguration config = getConfig();
 
                 if (config == null) {
@@ -89,12 +92,12 @@ public class WifiPasswordDialog extends AbstractDialog {
 
     @Override
     protected Button findOkButton() {
-        return (Button) findViewById(R.id.btn_done);
+        return null;
     }
 
     @Override
     protected Button findCancelButton() {
-        return (Button) findViewById(R.id.btn_close);
+        return null;
     }
 
     private boolean requireKeyStore(WifiConfiguration config) {

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.liang.albums.R;
@@ -29,8 +30,8 @@ public class TimeZoneDialog extends AbstractDialog {
 
     private static final String TAG = "TimeZoneDialog";
 
-    private Button mBtnCancel;
-    private Button mBtnDone;
+    private ImageButton mBtnCancel;
+    private ImageButton mBtnDone;
     private ListView mListView;
     private ZoneListAdapter mListAdapter;
     private AlarmManager mAlarmManager;
@@ -56,7 +57,7 @@ public class TimeZoneDialog extends AbstractDialog {
             }
         });
 
-        mBtnCancel = (Button) findViewById(R.id.btn_close);
+        mBtnCancel = (ImageButton) findViewById(R.id.btn_close);
         mBtnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +65,7 @@ public class TimeZoneDialog extends AbstractDialog {
             }
         });
 
-        mBtnDone = (Button) findViewById(R.id.btn_done);
+        mBtnDone = (ImageButton) findViewById(R.id.btn_done);
         mBtnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,12 +98,12 @@ public class TimeZoneDialog extends AbstractDialog {
 
     @Override
     protected Button findOkButton() {
-        return (Button) findViewById(R.id.btn_done);
+        return null;
     }
 
     @Override
     protected Button findCancelButton() {
-        return (Button) findViewById(R.id.btn_close);
+        return null;
     }
 
 

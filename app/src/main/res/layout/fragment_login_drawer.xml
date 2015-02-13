@@ -13,9 +13,9 @@
 
         <Button
             android:id="@+id/btn_login_setting"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:background="@drawable/icon_setting"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/icon_setting2"/>
 
         <Button
             android:id="@+id/btn_login_facebook"

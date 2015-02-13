@@ -57,7 +57,7 @@ public class WebDialog extends Dialog {
     static final boolean DISABLE_SSL_CHECK_FOR_TESTING = false;
 
     // width below which there are no extra margins
-    private static final int NO_PADDING_SCREEN_WIDTH = 750;
+    private static final int NO_PADDING_SCREEN_WIDTH = 800;
     // width beyond which we're always using the MIN_SCALE_FACTOR
     private static final int MAX_PADDING_SCREEN_WIDTH = 800;
     // height below which there are no extra margins

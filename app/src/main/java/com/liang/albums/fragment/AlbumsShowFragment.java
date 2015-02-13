@@ -1,6 +1,7 @@
 package com.liang.albums.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -19,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
 import com.liang.albums.R;
 import com.liang.albums.app.AlbumsApp;
 import com.liang.albums.interfaces.SocialEventsHandler;
@@ -85,16 +89,36 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
         intentFilter.addAction(Constants.Broadcasts.ACTION_CONTENTLIST_CHANGED);
         getActivity().registerReceiver(mReceiver, intentFilter);
 
-        feedList = AlbumsApp.getInstance().getContentService().getInstagramList();
-
+        //feedList = AlbumsApp.getInstance().getContentService().getInstagramList();
+        refreshContent();
     }
+
+    private UiLifecycleHelper uiHelper;
+
+    private Session.StatusCallback callback = new Session.StatusCallback() {
+        @Override
+        public void call(Session session, SessionState state, Exception exception) {
+            Log.d(TAG, "Session.StatusCallback "+state.toString());
+            if(state.equals(SessionState.OPENED)){
+                sendBroadcast(Constants.Broadcasts.ACTION_LOGIN);
+            }else if(state.equals(SessionState.CLOSED)) {
+                sendBroadcast(Constants.Broadcasts.ACTION_LOGOUT);
+            }else if(state.equals(SessionState.CLOSED_LOGIN_FAILED)) {
+                // login failed
+                Toast.makeText(getActivity(), "Login failed! Please check your network!", Toast.LENGTH_SHORT).show();
+            }else if(state.equals(SessionState.OPENING)){
+                Toast.makeText(getActivity(), "Trying to login!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 
     @Override
     public void onStart() {
         super.onStart();
 
         mScheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        mScheduledExecutorService.scheduleWithFixedDelay(new ViewPagerTask(), 10, 10, TimeUnit.SECONDS);
+        mScheduledExecutorService.scheduleWithFixedDelay(new ViewPagerTask(), 30, 30, TimeUnit.SECONDS);
+
     }
 
     @Override
@@ -243,6 +267,7 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
         public void run() {
             if(feedList!=null&&feedList.size()!=0) {
                 mCurrentItem = (mCurrentItem + 1) % feedList.size();
+                Log.d(TAG, "ViewPagerTask : currentitem = "+mCurrentItem );
                 mPagerHandler.obtainMessage().sendToTarget();
             }
         }
@@ -262,16 +287,34 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
     }
 
     private void refreshContent(){
+        Log.d(TAG, "refreshContent : ");
         UpdateContentsService svr = AlbumsApp.getInstance().getContentService();
         synchronized (feedList){
             feedList.clear();
-            feedList = svr.getInstagramList(); // + svr.getFacebookList();
+            feedList = svr.getInstagramList();
             List<Feed> tmp = svr.getFacebookList();
             for(int i=0;i<tmp.size();++i){
                 feedList.add(tmp.get(i));
             }
         }
+
+        if(feedList.size()==0){
+            Feed feed = new Feed();
+            feed.setMessage("assets://desc_image.png");
+            feedList.add(feed);
+        }
+
+        Log.d(TAG, "refreshContent : feed list count "+feedList.size());
         mPager.setAdapter(new ImageAdapter());
         mPager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION, 0));
+    }
+
+    private void sendBroadcast(String action){
+        Intent intent = new Intent();
+        intent.setAction(action);//
+        intent.putExtra(Constants.Intent.EX_ACCOUNT, Constants.SocialInfo.ACCOUNT_FACEBOOK);
+        intent.putExtra(Constants.Intent.EX_LOGIN_STATES,
+                Constants.SocialInfo.LoginStates.EX_LOGIN_SUCCESS);
+        getActivity().sendBroadcast(intent);
     }
 }

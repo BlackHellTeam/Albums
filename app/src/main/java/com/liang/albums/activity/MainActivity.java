@@ -1,5 +1,6 @@
 package com.liang.albums.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -10,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 
+import com.facebook.Session;
+import com.facebook.internal.Utility;
 import com.liang.albums.R;
 import com.liang.albums.app.AlbumsApp;
 import com.liang.albums.fragment.LoginDrawerFragment;
@@ -76,6 +79,8 @@ public class MainActivity extends ActionBarActivity
                 .getPrefBoolean(Constants.PreferenceConstants.FIRST_USE_FLAG, true)){
             startActivity(new Intent(this, GuideActivity.class));
         }
+
+//        initializeActiveSessionWithCachedToken(this);
 
     }
 
@@ -161,6 +166,25 @@ public class MainActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private boolean initializeActiveSessionWithCachedToken(Context context) {
+        if (context == null) {
+            return false;
+        }
+
+        Session session = Session.getActiveSession();
+        if (session != null) {
+            return session.isOpened();
+        }
+
+        String applicationId = Utility.getMetadataApplicationId(context);
+        if (applicationId == null) {
+            return false;
+        }
+
+        return Session.openActiveSessionFromCache(context) != null;
     }
 
 }
