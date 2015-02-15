@@ -89,8 +89,8 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
         intentFilter.addAction(Constants.Broadcasts.ACTION_CONTENTLIST_CHANGED);
         getActivity().registerReceiver(mReceiver, intentFilter);
 
-        //feedList = AlbumsApp.getInstance().getContentService().getInstagramList();
-        refreshContent();
+        feedList = AlbumsApp.getInstance().getContentService().getInstagramList();
+//        refreshContent();
     }
 
     private UiLifecycleHelper uiHelper;
@@ -290,18 +290,21 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
         Log.d(TAG, "refreshContent : ");
         UpdateContentsService svr = AlbumsApp.getInstance().getContentService();
         synchronized (feedList){
-            feedList.clear();
+            if(feedList!=null) {
+                feedList.clear();
+            }
             feedList = svr.getInstagramList();
             List<Feed> tmp = svr.getFacebookList();
             for(int i=0;i<tmp.size();++i){
                 feedList.add(tmp.get(i));
             }
-        }
 
-        if(feedList.size()==0){
-            Feed feed = new Feed();
-            feed.setMessage("assets://desc_image.png");
-            feedList.add(feed);
+
+            if(feedList.size()==0){
+                Feed feed = new Feed();
+                feed.setMessage("assets://desc_image.png");
+                feedList.add(feed);
+            }
         }
 
         Log.d(TAG, "refreshContent : feed list count "+feedList.size());
