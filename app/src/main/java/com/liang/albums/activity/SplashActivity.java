@@ -50,6 +50,7 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+//        setContentView(R.layout.activity_testview);
         mWifiUtil = AlbumsApp.getInstance().getWifiUtil();
         mAuthAdapter = AlbumsApp.getInstance().getAuthInstagramAdapter();
 
