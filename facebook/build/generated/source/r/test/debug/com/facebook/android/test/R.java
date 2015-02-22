@@ -384,6 +384,26 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_log_in_button=0x7f06001a;
         public static final int com_facebook_usersettingsfragment_logged_in=0x7f06001b;
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f06001c;
+        public static final int wifi_disabled_generic=0x7f06001d;
+        public static final int wifi_not_in_range=0x7f06001e;
+        public static final int wifi_remembered=0x7f06001f;
+        public static final int wifi_secured_first_item=0x7f060020;
+        public static final int wifi_secured_second_item=0x7f060021;
+        public static final int wifi_security_eap=0x7f060022;
+        public static final int wifi_security_none=0x7f060023;
+        public static final int wifi_security_psk_generic=0x7f060024;
+        public static final int wifi_security_short_eap=0x7f060025;
+        public static final int wifi_security_short_psk_generic=0x7f060026;
+        public static final int wifi_security_short_wep=0x7f060027;
+        public static final int wifi_security_short_wpa=0x7f060028;
+        public static final int wifi_security_short_wpa2=0x7f060029;
+        public static final int wifi_security_short_wpa_wpa2=0x7f06002a;
+        public static final int wifi_security_wep=0x7f06002b;
+        public static final int wifi_security_wpa=0x7f06002c;
+        public static final int wifi_security_wpa2=0x7f06002d;
+        public static final int wifi_security_wpa_wpa2=0x7f06002e;
+        public static final int wifi_wps_available_first_item=0x7f06002f;
+        public static final int wifi_wps_available_second_item=0x7f060030;
     }
     public static final class style {
         public static final int com_facebook_loginview_default_style=0x7f070000;
