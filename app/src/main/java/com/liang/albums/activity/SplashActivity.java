@@ -25,46 +25,28 @@ import java.util.List;
  * Created by liang on 15/1/8.
  * Splash activity
  *
- * 1、Open Wifi Connection
- * 2、Get all accounts, then login them
+ * Open Wifi Connection
  *
  */
-public class SplashActivity extends FragmentActivity implements SocialEventsHandler {
+public class SplashActivity extends FragmentActivity {
 
     private final String TAG = "SplashActivity";
 
-    private List<WifiConfiguration> mWifiCfgs;
-//    private ScanResult mScanResult;
-    private List<ScanResult> mListResult;
     private WifiUtil mWifiUtil;
-    private SocialAuthAdapter mAuthAdapter;
 
     private Handler mHandler;
-
-    private Integer mLoginCounter = new Integer(0);
-    private boolean mLoginStates = false;
-
-    private SocialAccountsReceiver mReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 2s 闪屏
         setContentView(R.layout.activity_splash);
-//        setContentView(R.layout.activity_testview);
+        // open wifi module
         mWifiUtil = AlbumsApp.getInstance().getWifiUtil();
-        mAuthAdapter = AlbumsApp.getInstance().getAuthInstagramAdapter();
-
-        mReceiver = new SocialAccountsReceiver(this);
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Constants.Broadcasts.ACTION_LOGIN);
-        registerReceiver(mReceiver, filter);
-
-        //mHandler = new Handler();
         if(!mWifiUtil.getWifiManager().isWifiEnabled()){
             mWifiUtil.getWifiManager().setWifiEnabled(true);
         }
-
-        //mHandler.post(rInitApp);
+        // start activity after 2s
         mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -75,99 +57,8 @@ public class SplashActivity extends FragmentActivity implements SocialEventsHand
         }, 2000);
     }
 
-    Runnable rInitApp = new Runnable() {
-        @Override
-        public void run() {
-            // find wifi results and connect the known one
-            if(!mWifiUtil.getWifiManager().isWifiEnabled()){
-                mWifiUtil.getWifiManager().setWifiEnabled(true);
-            }
-
-            // wait for wifi enabled
-            while (mWifiUtil.getWifiManager().getWifiState() != WifiManager.WIFI_STATE_ENABLED);
-
-            connectKnownWifi();
-
-//            connectSocialAccounts();
-        }
-    };
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mReceiver);
     }
-
-    private boolean connectKnownWifi(){
-        // scan for wifi
-        mListResult = mWifiUtil.getScanResults();
-        // then connect the known wifi
-        mWifiCfgs = mWifiUtil.getConfiguredConnections();
-
-        return  true;
-    }
-
-    private void connectSocialAccounts(){
-
-        boolean hasInsAccount = AlbumsApp.getInstance().getPreferenceUtil()
-                .getPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false);
-        boolean hasFBAccount = AlbumsApp.getInstance().getPreferenceUtil()
-                .getPrefBoolean(Constants.PreferenceConstants.LOGIN_FACEBOOK, false);
-        boolean hasFlickerAccount = AlbumsApp.getInstance().getPreferenceUtil()
-                .getPrefBoolean(Constants.PreferenceConstants.LOGIN_FLICKER, false);
-
-        if( !hasFBAccount && !hasInsAccount && !hasFlickerAccount ){
-            Log.d(TAG, "startActivity : GuideActivity");
-            startActivity(new Intent(this, GuideActivity.class));
-            finish();
-        }
-        Log.d(TAG, "startActivity : MainActivity");
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
-    }
-
-    @Override
-    public void onSignIn(String account, Constants.SocialInfo.LoginStates state) {
-        // one account login success the goto the albums show
-        // CounterSub();
-        synchronized (mLoginCounter){
-            mLoginCounter--;
-        }
-
-        if(state == Constants.SocialInfo.LoginStates.EX_LOGIN_SUCCESS){
-            mLoginStates = mLoginStates|true;
-        }else{
-            mLoginStates = mLoginStates|false;
-        }
-
-        if(mLoginCounter == 0 && mLoginStates){
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
-    }
-
-    @Override
-    public void onSignOut(String account) {
-
-    }
-
-    @Override
-    public void onContentListChanged(String account) {
-
-    }
-//
-//    private synchronized void CounterAdd(){
-//        mLoginCounter++;
-//        Log.d(TAG, "ADD : Login Counter = " + mLoginCounter);
-//    }
-//
-//    private synchronized void CounterSub(){
-//        mLoginCounter--;
-//        Log.d(TAG, "SUB : Login Counter = " + mLoginCounter);
-//    }
-//
-//    private synchronized int getLoginCounter(){
-//        Log.d(TAG, "GET : Login Counter = " + mLoginCounter);
-//        return mLoginCounter;
-//    }
 }

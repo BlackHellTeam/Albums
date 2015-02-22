@@ -20,7 +20,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -36,15 +35,16 @@ import com.liang.albums.view.TimePickerCusDialog;
 import com.liang.albums.view.TimeZoneDialog;
 import com.liang.albums.view.WifiPasswordDialog;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by liang on 15/1/29.
+ *
+ * 1 set language
+ * 2 set wifi connection
+ * 3 set date & time
+ *
  */
 public class GuideActivity extends FragmentActivity implements ViewPager.OnPageChangeListener {
     private static final String TAG = "GuideActivity";
@@ -162,6 +162,7 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
 
 
         // time settings
+        // fix me ... need to hold time by myself
         ImageButton btnDone = (ImageButton)pageView3.findViewById(R.id.btn_pager_done);
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -238,18 +239,6 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
                     WifiManager.EXTRA_NETWORK_INFO)).getDetailedState());
         } else if (WifiManager.RSSI_CHANGED_ACTION.equals(action)) {
             updateConnectionState(null);
-
-//            if (!TextUtils.isEmpty(mLastHubUser)) {
-//                Message msg = mHandler.obtainMessage(0);
-//                Bundle data = new Bundle();
-//                data.putString(EXTRA_HUB_NAME, mLastHubUser);
-//                data.putString(EXTRA_HUB_PASSWORD, mLastHubPwd);
-//                msg.setData(data);
-//                mHandler.sendMessage(msg);
-
-//                mLastHubUser = null;
-//                mLastHubPwd = null;
-//            }
         }
     }
 
