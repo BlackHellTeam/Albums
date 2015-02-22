@@ -8,11 +8,9 @@
         android:id="@+id/text_pager_language"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="178dp"
         android:text="@string/title_language"
-        android:textSize="32sp"
-        android:textColor="@color/milk_white"/>
+        style="@style/guide_title_text"/>
 
     <RadioGroup
         android:id="@+id/radiogroup_pager_language"
@@ -27,8 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="English"
-            android:textColor="@color/milk_white"
-            android:textSize="26sp"
+            style="@style/common_radiobtn_text"
             android:paddingLeft="8dp"
             android:button="@drawable/radiobutton_selector"/>
         <ImageView
@@ -42,8 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="中文"
-            android:textColor="@color/milk_white"
-            android:textSize="26sp"
+            style="@style/common_radiobtn_text"
             android:paddingLeft="8dp"
             android:button="@drawable/radiobutton_selector"/>
 
@@ -57,8 +53,7 @@
         android:layout_marginBottom="242dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="90dp"
-        android:scaleType="center"
         android:src="@drawable/btn_next"
-        android:background="@android:color/transparent"/>
+        style="@style/common_imgbtn"/>
 
 </RelativeLayout>

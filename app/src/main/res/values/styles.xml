@@ -14,4 +14,20 @@
         <item name="android:backgroundDimEnabled">true</item> <!-- 模糊 -->
     </style>
 
+    <style name="common_imgbtn">
+        <item name="android:scaleType">center</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="common_radiobtn_text">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="guide_title_text">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+
 </resources>

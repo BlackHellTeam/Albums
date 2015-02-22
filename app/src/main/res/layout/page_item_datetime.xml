@@ -8,16 +8,9 @@
         android:id="@+id/text_pager_language"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="94dp"
         android:text="@string/title_datetime"
-        android:textSize="32sp"
-        android:textColor="@color/milk_white"/>
-
-    <!-- <Spinner
-        android:id="@+id/spinner_pager_time"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" /> -->
+        style="@style/guide_title_text"/>
 
     <ListView
         android:id="@+id/listView_page_time"
@@ -40,8 +33,7 @@
         android:layout_marginTop="488dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="100dp"
-        android:scaleType="center"
         android:src="@drawable/btn_done"
-        android:background="@android:color/transparent"/>
+        style="@style/common_imgbtn"/>
 
 </RelativeLayout>

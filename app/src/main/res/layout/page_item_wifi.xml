@@ -8,11 +8,9 @@
         android:id="@+id/textview_page_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="112dp"
-        android:text="Wi-Fi"
-        android:textColor="@color/milk_white"
-        android:textSize="32sp"/>
+        android:text="@string/title_wifi"
+        style="@style/guide_title_text"/>
     <ListView
         android:id="@+id/listView_page_wifi"
         android:layout_width="608dp"
@@ -34,9 +32,8 @@
         android:layout_marginBottom="105dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="90dp"
-        android:scaleType="center"
         android:src="@drawable/btn_next"
-        android:background="@android:color/transparent"/>
+        style="@style/common_imgbtn"/>
 
 
 </RelativeLayout>
