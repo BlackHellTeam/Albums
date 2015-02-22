@@ -92,13 +92,13 @@ public class InstagramManagementFragment extends PlaceholderFragment
             btnLogout.setClickable(false);
         }
     }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(
-                (Constants.Extra.FragmentSection)getArguments().getSerializable(ARG_SECTION_NUMBER));
-    }
+//
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        ((MainActivity) activity).onSectionAttached(
+//                (Constants.Extra.FragmentSection)getArguments().getSerializable(ARG_SECTION_NUMBER));
+//    }
 
     @Override
     public void onSignIn(String account, Constants.SocialInfo.LoginStates state) {

@@ -114,13 +114,13 @@ public class FacebookManagementFragment extends PlaceholderFragment
         super.onSaveInstanceState(outState);
         uiHelper.onSaveInstanceState(outState);
     }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(
-                (Constants.Extra.FragmentSection)getArguments().getSerializable(ARG_SECTION_NUMBER));
-    }
+//
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        ((MainActivity) activity).onSectionAttached(
+//                (Constants.Extra.FragmentSection)getArguments().getSerializable(ARG_SECTION_NUMBER));
+//    }
 
     @Override
     public void onSignIn(String account, Constants.SocialInfo.LoginStates state) {

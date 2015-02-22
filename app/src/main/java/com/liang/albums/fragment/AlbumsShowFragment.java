@@ -89,33 +89,13 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
         intentFilter.addAction(Constants.Broadcasts.ACTION_CONTENTLIST_CHANGED);
         getActivity().registerReceiver(mReceiver, intentFilter);
 
+        // init as an empty array
         feedList = AlbumsApp.getInstance().getContentService().getInstagramList();
-//        refreshContent();
     }
-
-    private UiLifecycleHelper uiHelper;
-
-    private Session.StatusCallback callback = new Session.StatusCallback() {
-        @Override
-        public void call(Session session, SessionState state, Exception exception) {
-            Log.d(TAG, "Session.StatusCallback "+state.toString());
-            if(state.equals(SessionState.OPENED)){
-                sendBroadcast(Constants.Broadcasts.ACTION_LOGIN);
-            }else if(state.equals(SessionState.CLOSED)) {
-                sendBroadcast(Constants.Broadcasts.ACTION_LOGOUT);
-            }else if(state.equals(SessionState.CLOSED_LOGIN_FAILED)) {
-                // login failed
-                Toast.makeText(getActivity(), "Login failed! Please check your network!", Toast.LENGTH_SHORT).show();
-            }else if(state.equals(SessionState.OPENING)){
-                Toast.makeText(getActivity(), "Trying to login!", Toast.LENGTH_SHORT).show();
-            }
-        }
-    };
 
     @Override
     public void onStart() {
         super.onStart();
-
         mScheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         mScheduledExecutorService.scheduleWithFixedDelay(new ViewPagerTask(), 30, 30, TimeUnit.SECONDS);
 
@@ -140,10 +120,6 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
     @Override
     public void onResume() {
         super.onResume();
-//        if (AlbumsApp.getInstance().getPreferenceUtil()
-//                .getPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false)){
-//            feedList = AlbumsApp.getInstance().getContentService().getInstagramList();
-//        }
         refreshContent();
     }
 
@@ -155,7 +131,6 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
 
         mPager.setAdapter(new ImageAdapter());
         mPager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION, mCurrentItem));
-//		mJazzy.setOutlineEnabled(true);
     }
 
     @Override
@@ -310,14 +285,5 @@ public class AlbumsShowFragment extends PlaceholderFragment implements SocialEve
         Log.d(TAG, "refreshContent : feed list count "+feedList.size());
         mPager.setAdapter(new ImageAdapter());
         mPager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION, 0));
-    }
-
-    private void sendBroadcast(String action){
-        Intent intent = new Intent();
-        intent.setAction(action);//
-        intent.putExtra(Constants.Intent.EX_ACCOUNT, Constants.SocialInfo.ACCOUNT_FACEBOOK);
-        intent.putExtra(Constants.Intent.EX_LOGIN_STATES,
-                Constants.SocialInfo.LoginStates.EX_LOGIN_SUCCESS);
-        getActivity().sendBroadcast(intent);
     }
 }

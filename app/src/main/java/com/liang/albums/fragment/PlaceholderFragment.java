@@ -68,12 +68,12 @@ public class PlaceholderFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(
-                (Constants.Extra.FragmentSection)
-                        getArguments().getSerializable(ARG_SECTION_NUMBER));
-    }
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        ((MainActivity) activity).onSectionAttached(
+//                (Constants.Extra.FragmentSection)
+//                        getArguments().getSerializable(ARG_SECTION_NUMBER));
+//    }
 
 }
