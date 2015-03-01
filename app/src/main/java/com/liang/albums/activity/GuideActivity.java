@@ -4,8 +4,12 @@ import android.app.AlarmManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.SupplicantState;
@@ -17,6 +21,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -51,7 +56,6 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
 
     private ViewPager mViewPager;
     private List<View> mPageList;
-
 
     // for wifi settings
     private final IntentFilter mFilter;
@@ -102,6 +106,7 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
         mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
         updateAccessPoints();
+
     }
 
     @Override
@@ -183,14 +188,33 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
                 if(position == 0){
                     AlarmManager am = (AlarmManager)getApplication().getSystemService(Service.ALARM_SERVICE);
                     TimeZoneDialog dialog = new TimeZoneDialog(GuideActivity.this, am);
+                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            mTimeListAdapter.notifyDataSetChanged();
+                        }
+                    });
                     dialog.show();
                 }
                 if(position == 1){
                     DatePickerCusDialog dialog = new DatePickerCusDialog();
+
+                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            mTimeListAdapter.notifyDataSetChanged();
+                        }
+                    });
                     dialog.show(getSupportFragmentManager(), "DatePicker");
                 }
                 if(position == 2){
                     TimePickerCusDialog dialog = new TimePickerCusDialog();
+                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            mTimeListAdapter.notifyDataSetChanged();
+                        }
+                    });
                     dialog.show(getSupportFragmentManager(), "TimePicker");
                 }
             }
@@ -377,4 +401,5 @@ public class GuideActivity extends FragmentActivity implements ViewPager.OnPageC
 
         mResetNetworks = false;
     }
+
 }

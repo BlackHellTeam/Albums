@@ -29,10 +29,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:layout_alignLeft="@id/img_time_icon"
+        android:layout_toLeftOf="@id/img_time_icon"
         android:layout_marginRight="12dp"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textColor="@color/milk_white"
+        android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"/>
 
 </RelativeLayout>

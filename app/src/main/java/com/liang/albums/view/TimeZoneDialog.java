@@ -15,7 +15,9 @@ import android.widget.ListView;
 
 import com.liang.albums.R;
 import com.liang.albums.adapter.ZoneListAdapter;
+import com.liang.albums.app.AlbumsApp;
 import com.liang.albums.util.AccessPoint;
+import com.liang.albums.util.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -88,6 +90,9 @@ public class TimeZoneDialog extends AbstractDialog {
                 Date resultdate = new Date(miliSeconds);
                 Log.d(TAG, sdf.format(resultdate));
 
+                // set time zone
+                AlbumsApp.getInstance().getPreferenceUtil()
+                        .setPrefString(Constants.PreferenceConstants.TIME_ZONE_NAME, TimeZoneName);
 
                 mAlarmManager.setTimeZone(timezone.getID());
                 TimeZoneDialog.this.dismiss();

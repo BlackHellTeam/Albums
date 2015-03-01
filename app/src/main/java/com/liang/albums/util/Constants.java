@@ -12,6 +12,8 @@ public class Constants {
         public static final String LOGIN_FLICKER = "FLICKER.PREFERENCE.LOGIN";
         // system settings
         public static final String FIRST_USE_FLAG = "FIRST.FLAG.SETTINGS";
+        public static final String TIME_DIFF_SECONDS = "TIME.DIFFERENCE.SECONDS";
+        public static final String TIME_ZONE_NAME = "TIME.ZONE.NAME";
     }
 
     public static final class Extra {

@@ -5,25 +5,27 @@
     android:layout_height="500dp"
     android:background="@drawable/bg_dialog">
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_close"
-        android:layout_width="12dp"
-        android:layout_height="14dp"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="7dp"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="7dp"
-        android:background="@drawable/btn_dialog_close"/>
+        style="@style/common_imgbtn"
+        android:src="@drawable/btn_dialog_close"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_done"
         android:layout_width="52dp"
-        android:layout_height="15dp"
+        android:layout_height="44dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="7dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="7dp"
-        android:background="@drawable/btn_dialog_done"/>
+        style="@style/common_imgbtn"
+        android:src="@drawable/btn_dialog_done"/>
     
     <ListView
         android:id="@+id/lv_time_zone"
