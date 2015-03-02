@@ -1,5 +1,5 @@
 <!-- A DrawerLayout is intended to be used as the top-level content view using match_parent for both width and height to consume the full space available. -->
-<android.support.v4.widget.DrawerLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
@@ -22,14 +22,24 @@
     <!-- The drawer is given a fixed width in dp and extends the full height of
          the container. -->
     <!--android:layout_width="@dimen/navigation_drawer_width" -->
-    <fragment android:id="@+id/navigation_drawer"
+    <!-- <fragment android:id="@+id/navigation_drawer"
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:name="com.liang.albums.fragment.LoginDrawerFragment"
-        tools:layout="@layout/fragment_login_drawer" />
+        tools:layout="@layout/fragment_login_drawer" /> -->
+
+    <ImageButton
+        android:id="@+id/imgbtn_main_settings"
+        android:layout_width="42dp"
+        android:layout_height="86dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/arrow_round_right"
+        style="@style/common_imgbtn"
+        />
 
     <!-- android:name="com.liang.albums.fragment.NavigationDrawerFragment"
     tools:layout="@layout/fragment_navigation_drawer" /> -->
 
-</android.support.v4.widget.DrawerLayout>
+</RelativeLayout>

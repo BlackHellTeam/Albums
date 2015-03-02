@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.widget.ImageButton;
+
 import com.liang.albums.R;
 import com.liang.albums.app.AlbumsApp;
 import com.liang.albums.fragment.PlaceholderFragment;
@@ -15,6 +17,7 @@ public class MainActivity extends FragmentActivity {
 
     private static final String TAG = "MainActivity";
 
+    private ImageButton imageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class MainActivity extends FragmentActivity {
 //                        .setPrefBoolean(Constants.PreferenceConstants.LOGIN_INSTAGRAM, false);
 //            }
 //        }
+        imageButton = (ImageButton) findViewById(R.id.imgbtn_main_settings);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
