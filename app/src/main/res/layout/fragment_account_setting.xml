@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#3E454D">
+
+    <ImageButton
+        android:id="@+id/imgbtn_account_setting_close"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="11dp"
+        android:layout_marginLeft="11dp"
+        style="@style/common_imgbtn"
+        android:src="@drawable/blue_close"/>
+
+
+    <ImageButton
+        android:id="@+id/imgbtn_account_setting_guide"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="11dp"
+        android:layout_marginRight="11dp"
+        style="@style/common_imgbtn"
+        android:src="@drawable/icon_setting"/>
+    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="88dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/line_divide"/>
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="90dp">
+
+        <ImageButton
+            android:id="@+id/imgbtn_setting_facebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="178dp"
+            style="@style/common_imgbtn"
+            android:src="@drawable/ball_facebook"/>
+
+        <ImageButton
+            android:id="@+id/imgbtn_setting_instagram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="178dp"
+            style="@style/common_imgbtn"
+            android:src="@drawable/ball_instagram"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

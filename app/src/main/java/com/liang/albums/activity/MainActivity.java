@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 
 import com.liang.albums.R;
@@ -48,6 +49,16 @@ public class MainActivity extends FragmentActivity {
                 .getPrefBoolean(Constants.PreferenceConstants.FIRST_USE_FLAG, true)){
             startActivity(new Intent(this, GuideActivity.class));
         }
+
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                intent.putExtra(SettingActivity.EXTRA_KEY, SettingActivity.EXTRA_ACCOUNTSETTING);
+                startActivity(intent);
+            }
+        });
 
 //        initializeActiveSessionWithCachedToken(this);
 

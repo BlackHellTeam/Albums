@@ -85,6 +85,8 @@ public class LoginDrawerFragment extends Fragment implements SocialEventsHandler
         mTextViewFacebook = (TextView) loginView.findViewById(R.id.text_login_facebook);
         mTextViewInstagram = (TextView) loginView.findViewById(R.id.text_login_instagram);
 
+        mAuthAdapter = AlbumsApp.getInstance().getAuthInstagramAdapter();
+
         mBtnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,8 +129,6 @@ public class LoginDrawerFragment extends Fragment implements SocialEventsHandler
                 startActivity(new Intent(getActivity(), SettingActivity.class));
             }
         });
-
-        mAuthAdapter = AlbumsApp.getInstance().getAuthInstagramAdapter();
 
         mReceiver = new SocialAccountsReceiver(this);
 

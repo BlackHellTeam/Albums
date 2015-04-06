@@ -39,14 +39,14 @@ public class ShowActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+//        mNavigationDrawerFragment = (NavigationDrawerFragment)
+//                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+//        mNavigationDrawerFragment.setUp(
+//                R.id.navigation_drawer,
+//                (DrawerLayout) findViewById(R.id.drawer_layout));
 
         authAdapter = AlbumsApp.getInstance().getAuthInstagramAdapter();
 

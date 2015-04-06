@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.liang.albums.R;
+import com.liang.albums.fragment.AccountsSettingFragment;
 import com.liang.albums.fragment.FacebookSettingFragment;
 
 /**
@@ -15,6 +16,11 @@ import com.liang.albums.fragment.FacebookSettingFragment;
 public class SettingActivity extends FragmentActivity {
 
     private static final String TAG = "SettingWifiActivity";
+    public static final String EXTRA_KEY = "SettingActivity_EXTRA";
+
+    public static final String EXTRA_FACEBOOK = "FACEBOOK";
+    public static final String EXTRA_INSTAGRAM = "INSTAGRAM";
+    public static final String EXTRA_ACCOUNTSETTING = "ACCOUNTSETTING";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +30,23 @@ public class SettingActivity extends FragmentActivity {
         Log.d(TAG, "onCreate");
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = new FacebookSettingFragment();
+        Fragment fragment = new AccountsSettingFragment();
+
+        String key = getIntent().getStringExtra(EXTRA_KEY);
+
+        switch (key){
+            case EXTRA_FACEBOOK:
+                fragment = new FacebookSettingFragment();
+                break;
+            case EXTRA_INSTAGRAM:
+//                fragment = new FacebookSettingFragment();
+                break;
+            case EXTRA_ACCOUNTSETTING:
+                fragment = new AccountsSettingFragment();
+                break;
+        }
+
+
 
         fragmentManager.beginTransaction()
                 .add(R.id.container_setting, fragment).commit();
